@@ -7,7 +7,7 @@ import { MongoClient } from "mongodb";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT = __dirname;
+const ROOT = path.join(__dirname, "Client");
 
 loadEnvFile();
 
@@ -168,17 +168,21 @@ function sendJson(response, statusCode, data) {
 }
 
 async function getData() {
-  const collection = await getMongoCollection();
-  if (!collection) return defaultData;
+  try {
+    const collection = await getMongoCollection();
+    if (!collection) return defaultData;
 
-  const document = await collection.findOne({ _id: DATA_DOCUMENT_ID });
-  if (document?.data) return document.data;
+    const document = await collection.findOne({ _id: DATA_DOCUMENT_ID });
+    if (document?.data) return document.data;
 
-  await collection.updateOne(
-    { _id: DATA_DOCUMENT_ID },
-    { $set: { data: defaultData, updatedAt: new Date() } },
-    { upsert: true }
-  );
+    await collection.updateOne(
+      { _id: DATA_DOCUMENT_ID },
+      { $set: { data: defaultData, updatedAt: new Date() } },
+      { upsert: true }
+    );
+  } catch (error) {
+    console.error("MongoDB read failed:", error.message);
+  }
 
   return defaultData;
 }
