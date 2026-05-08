@@ -576,6 +576,66 @@ h3 {
   font-weight: 800;
 }
 
+.learning-tech-section {
+  padding-top: 24px;
+}
+
+.learning-tech-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.learning-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 32px 0 0;
+  list-style: none;
+}
+
+.learning-tech-grid li {
+  min-height: 220px;
+  display: grid;
+  align-content: space-between;
+  gap: 20px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(41, 211, 255, 0.1), rgba(116, 247, 180, 0.05)),
+    rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow);
+  animation: cardBreath 9s ease-in-out infinite alternate;
+}
+
+.learning-tech-grid h3 {
+  margin-bottom: 12px;
+  font-size: 1.35rem;
+}
+
+.learning-tech-grid p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.learning-tech-edit {
+  width: fit-content;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid rgba(116, 247, 180, 0.42);
+  border-radius: 8px;
+  background: rgba(116, 247, 180, 0.08);
+  color: var(--green);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
 .process-section {
   padding-top: 42px;
   overflow: hidden;
@@ -1125,6 +1185,7 @@ h3 {
 
 .admin-active .profile-panel,
 .admin-active .skills-grid li,
+.admin-active .learning-tech-grid li,
 .admin-active .project-card {
   box-shadow: 0 0 0 1px rgba(116, 247, 180, 0.1), var(--shadow);
 }
@@ -1282,6 +1343,10 @@ h3 {
   .contact-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .learning-tech-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 860px) {
@@ -1319,6 +1384,10 @@ h3 {
 
   .process-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .learning-tech-grid {
+    grid-template-columns: 1fr;
   }
 
   .hero {

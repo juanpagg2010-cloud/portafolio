@@ -3,6 +3,7 @@ const PROJECTS_KEY = "juanPortfolioProjects";
 const PROFILE_KEY = "juanPortfolioProfile";
 const SKILLS_KEY = "juanPortfolioSkills";
 const EDUCATION_KEY = "juanPortfolioEducation";
+const LEARNING_TECH_KEY = "juanPortfolioLearningTech";
 
 const defaultProjects = [
   {
@@ -69,6 +70,24 @@ const defaultEducation = [
   },
 ];
 
+const defaultLearningTech = [
+  {
+    id: "mongo-db",
+    name: "MongoDB",
+    description: "Estoy fortaleciendo el manejo de bases de datos NoSQL para conectar mejor mis APIs.",
+  },
+  {
+    id: "typescript",
+    name: "TypeScript",
+    description: "Estoy aprendiendo tipado para escribir codigo JavaScript mas claro, estable y mantenible.",
+  },
+  {
+    id: "testing",
+    name: "Testing Backend",
+    description: "Estoy practicando pruebas para validar endpoints, errores y comportamientos del servidor.",
+  },
+];
+
 const navToggle = document.querySelector(".nav-toggle");
 const mainNav = document.querySelector(".main-nav");
 const navLinks = document.querySelectorAll(".main-nav a");
@@ -76,6 +95,7 @@ const sections = document.querySelectorAll("section[id]");
 const projectsGrid = document.querySelector("#projectsGrid");
 const skillsGrid = document.querySelector("#skillsGrid");
 const educationGrid = document.querySelector("#educationGrid");
+const learningTechGrid = document.querySelector("#learningTechGrid");
 const adminOpenButtons = document.querySelectorAll("[data-admin-open]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const adminPanel = document.querySelector("[data-admin-panel]");
@@ -89,6 +109,8 @@ const skillModal = document.querySelector("#skillModal");
 const skillForm = document.querySelector("#skillForm");
 const educationModal = document.querySelector("#educationModal");
 const educationForm = document.querySelector("#educationForm");
+const learningTechModal = document.querySelector("#learningTechModal");
+const learningTechForm = document.querySelector("#learningTechForm");
 const passwordMessage = document.querySelector("[data-password-message]");
 const projectMode = document.querySelector("[data-project-mode]");
 const projectDeleteButton = document.querySelector("[data-project-delete]");
@@ -96,12 +118,15 @@ const skillMode = document.querySelector("[data-skill-mode]");
 const skillDeleteButton = document.querySelector("[data-skill-delete]");
 const educationMode = document.querySelector("[data-education-mode]");
 const educationDeleteButton = document.querySelector("[data-education-delete]");
+const learningTechMode = document.querySelector("[data-learning-tech-mode]");
+const learningTechDeleteButton = document.querySelector("[data-learning-tech-delete]");
 const photoRemoveButton = document.querySelector("[data-photo-remove]");
 
 let projects = loadProjects();
 let profile = loadProfile();
 let skills = loadSkills();
 let educationItems = loadEducation();
+let learningTechItems = loadLearningTech();
 let isAdmin = false;
 let pendingAction = null;
 let revealObserver;
@@ -140,6 +165,15 @@ function loadEducation() {
 
 function saveEducation() {
   localStorage.setItem(EDUCATION_KEY, JSON.stringify(educationItems));
+}
+
+function loadLearningTech() {
+  const savedLearningTech = localStorage.getItem(LEARNING_TECH_KEY);
+  return savedLearningTech ? JSON.parse(savedLearningTech) : defaultLearningTech;
+}
+
+function saveLearningTech() {
+  localStorage.setItem(LEARNING_TECH_KEY, JSON.stringify(learningTechItems));
 }
 
 function escapeHtml(value) {
@@ -209,6 +243,22 @@ function renderEducation() {
     .join("");
 }
 
+function renderLearningTech() {
+  learningTechGrid.innerHTML = learningTechItems
+    .map(
+      (tech) => `
+        <li>
+          <div>
+            <h3>${escapeHtml(tech.name)}</h3>
+            <p>${escapeHtml(tech.description)}</p>
+          </div>
+          <button class="learning-tech-edit" type="button" data-learning-tech-edit="${escapeHtml(tech.id)}" ${isAdmin ? "" : "hidden"}>Editar</button>
+        </li>
+      `
+    )
+    .join("");
+}
+
 function renderProfile() {
   const nameElement = document.querySelector("[data-profile-name]");
   const heroElement = document.querySelector("[data-profile-hero]");
@@ -258,6 +308,7 @@ function setAdminMode(value) {
   renderSkills();
   renderProjects();
   renderEducation();
+  renderLearningTech();
 }
 
 function requestPassword(action) {
@@ -321,6 +372,16 @@ function openEducationModal(item) {
   educationModal.showModal();
 }
 
+function openLearningTechModal(tech) {
+  learningTechForm.reset();
+  learningTechForm.elements.techId.value = tech?.id || "";
+  learningTechForm.elements.techName.value = tech?.name || "";
+  learningTechForm.elements.techDescription.value = tech?.description || "";
+  learningTechMode.textContent = tech ? "Editar tecnologia" : "Agregar tecnologia";
+  learningTechDeleteButton.hidden = !tech;
+  learningTechModal.showModal();
+}
+
 function setupRevealAnimations() {
   const revealElements = document.querySelectorAll(".reveal");
 
@@ -375,6 +436,10 @@ document.querySelectorAll("[data-skill-add]").forEach((button) => {
 
 document.querySelectorAll("[data-education-add]").forEach((button) => {
   button.addEventListener("click", () => requestPassword(() => openEducationModal()));
+});
+
+document.querySelectorAll("[data-learning-tech-add]").forEach((button) => {
+  button.addEventListener("click", () => requestPassword(() => openLearningTechModal()));
 });
 
 document.querySelector("[data-profile-edit]").addEventListener("click", () => {
@@ -537,6 +602,35 @@ educationDeleteButton.addEventListener("click", () => {
   educationModal.close();
 });
 
+learningTechForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(learningTechForm);
+  const techId = formData.get("techId");
+  const techData = {
+    id: techId || `learning-tech-${Date.now()}`,
+    name: formData.get("techName").trim(),
+    description: formData.get("techDescription").trim(),
+  };
+
+  if (techId) {
+    learningTechItems = learningTechItems.map((tech) => (tech.id === techId ? techData : tech));
+  } else {
+    learningTechItems = [...learningTechItems, techData];
+  }
+
+  saveLearningTech();
+  renderLearningTech();
+  learningTechModal.close();
+});
+
+learningTechDeleteButton.addEventListener("click", () => {
+  const techId = learningTechForm.elements.techId.value;
+  learningTechItems = learningTechItems.filter((tech) => tech.id !== techId);
+  saveLearningTech();
+  renderLearningTech();
+  learningTechModal.close();
+});
+
 projectsGrid.addEventListener("click", (event) => {
   const editButton = event.target.closest("[data-project-edit]");
   if (!editButton) return;
@@ -551,6 +645,14 @@ educationGrid.addEventListener("click", (event) => {
 
   const item = educationItems.find((education) => education.id === editButton.dataset.educationEdit);
   if (item) requestPassword(() => openEducationModal(item));
+});
+
+learningTechGrid.addEventListener("click", (event) => {
+  const editButton = event.target.closest("[data-learning-tech-edit]");
+  if (!editButton) return;
+
+  const tech = learningTechItems.find((item) => item.id === editButton.dataset.learningTechEdit);
+  if (tech) requestPassword(() => openLearningTechModal(tech));
 });
 
 skillsGrid.addEventListener("click", (event) => {
@@ -581,4 +683,5 @@ renderProfile();
 renderSkills();
 renderProjects();
 renderEducation();
+renderLearningTech();
 setupRevealAnimations();

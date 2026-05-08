@@ -32,6 +32,7 @@
     <nav class="main-nav" aria-label="Navegacion principal">
       <a href="#sobre-mi">Sobre mi</a>
       <a href="#habilidades">Habilidades</a>
+      <a href="#aprendiendo">Aprendiendo</a>
       <a href="#proceso">Proceso</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#contacto">Contacto</a>
@@ -114,6 +115,18 @@
         <button class="btn primary" type="button" data-skill-add>Agregar habilidad</button>
       </div>
       <ul class="skills-grid reveal" id="skillsGrid" aria-label="Habilidades tecnicas">
+      </ul>
+    </section>
+
+    <section class="section learning-tech-section" id="aprendiendo">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Aprendiendo</p>
+        <h2>Tecnologias que estoy fortaleciendo.</h2>
+      </div>
+      <div class="learning-tech-actions" data-admin-only hidden>
+        <button class="btn primary" type="button" data-learning-tech-add>Agregar tecnologia</button>
+      </div>
+      <ul class="learning-tech-grid reveal" id="learningTechGrid" aria-label="Tecnologias que estoy aprendiendo">
       </ul>
     </section>
 
@@ -247,6 +260,7 @@
     <span>Modo edicion activo</span>
     <button type="button" data-project-add>Agregar proyecto</button>
     <button type="button" data-skill-add>Agregar habilidad</button>
+    <button type="button" data-learning-tech-add>Agregar aprendiendo</button>
     <button type="button" data-education-add>Agregar formacion</button>
     <button type="button" data-profile-edit>Editar informacion</button>
     <button type="button" data-admin-logout>Salir</button>
@@ -403,6 +417,27 @@
       <div class="modal-actions">
         <button class="btn primary" type="submit">Guardar</button>
         <button class="btn danger" type="button" data-education-delete hidden>Eliminar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="learningTechModal">
+    <form class="modal-card" method="dialog" id="learningTechForm">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <p class="eyebrow" data-learning-tech-mode>Tecnologia</p>
+      <h2>Editar aprendizaje</h2>
+      <input type="hidden" name="techId">
+      <label>
+        Tecnologia
+        <input type="text" name="techName" placeholder="Ej: MongoDB" required>
+      </label>
+      <label>
+        Descripcion corta
+        <textarea name="techDescription" rows="3" placeholder="Que estas practicando o fortaleciendo" required></textarea>
+      </label>
+      <div class="modal-actions">
+        <button class="btn primary" type="submit">Guardar</button>
+        <button class="btn danger" type="button" data-learning-tech-delete hidden>Eliminar</button>
       </div>
     </form>
   </dialog>
