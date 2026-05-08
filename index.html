@@ -11,8 +11,12 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="cursor-glow" aria-hidden="true"></div>
   <div class="page-noise" aria-hidden="true"></div>
+  <div class="ambient-stage" aria-hidden="true">
+    <span class="ambient-line"></span>
+    <span class="ambient-line"></span>
+    <span class="ambient-line"></span>
+  </div>
 
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Ir al inicio">
@@ -32,20 +36,23 @@
       <a href="#proyectos">Proyectos</a>
       <a href="#contacto">Contacto</a>
     </nav>
+
+    <button class="admin-entry" type="button" data-admin-open>Editar</button>
   </header>
 
   <main>
     <section class="hero section" id="inicio">
-      <div class="hero-orbit" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
+      <div class="code-stream" aria-hidden="true">
+        <span>const api = secure();</span>
+        <span>router.get("/projects");</span>
+        <span>db.connect();</span>
+        <span>status: scalable</span>
       </div>
 
       <div class="hero-content reveal">
         <p class="eyebrow">Backend Developer</p>
-        <h1>Juan Pablo Barragan Cortes</h1>
-        <p class="hero-copy">
+        <h1 data-profile-name>Juan Pablo Barragan Cortes</h1>
+        <p class="hero-copy" data-profile-hero>
           Construyo la logica detras de cada aplicacion: APIs seguras, bases de datos eficientes y sistemas backend escalables que hacen que todo funcione.
         </p>
         <div class="hero-actions">
@@ -56,24 +63,25 @@
 
       <aside class="profile-panel reveal" aria-label="Resumen profesional">
         <div class="avatar-placeholder">
-          <span>JP</span>
+          <img data-profile-photo src="" alt="Foto de Juan Pablo Barragan Cortes" hidden>
+          <span data-profile-initials>JP</span>
         </div>
         <div>
           <p class="panel-label">Especialidad</p>
-          <h2>JavaScript Backend</h2>
+          <h2 data-profile-specialty>JavaScript Backend</h2>
         </div>
         <ul class="quick-stats">
           <li>
-            <strong>Node.js</strong>
-            <span>Runtime principal</span>
+            <strong data-stat-title="0">Node.js</strong>
+            <span data-stat-text="0">Runtime principal</span>
           </li>
           <li>
-            <strong>Express.js</strong>
-            <span>APIs y rutas</span>
+            <strong data-stat-title="1">Express.js</strong>
+            <span data-stat-text="1">APIs y rutas</span>
           </li>
           <li>
-            <strong>DevSenior Code</strong>
-            <span>Formacion actual</span>
+            <strong data-stat-title="2">DevSenior Code</strong>
+            <span data-stat-text="2">Formacion actual</span>
           </li>
         </ul>
       </aside>
@@ -85,10 +93,10 @@
         <h2>Trabajo desde la base que sostiene el producto.</h2>
       </div>
       <div class="text-block reveal">
-        <p>
+        <p data-profile-about>
           Soy un desarrollador web especializado en el backend con JavaScript. Me enfoco en tecnologias como Node.js, Express, HTML y CSS, aunque mi principal fortaleza es el desarrollo backend.
         </p>
-        <p>
+        <p data-profile-location>
           Soy de Colombia, Ibague - Tolima, y desde ahi estoy construyendo mi camino en el desarrollo web con enfoque en soluciones backend.
         </p>
         <p>
@@ -102,13 +110,10 @@
         <p class="eyebrow">Stack tecnico</p>
         <h2>Herramientas con las que construyo.</h2>
       </div>
-      <ul class="skills-grid reveal" aria-label="Habilidades tecnicas">
-        <li>HTML5</li>
-        <li>CSS3</li>
-        <li>Tailwind CSS</li>
-        <li>JavaScript Vanilla</li>
-        <li>Node.js</li>
-        <li>Express.js</li>
+      <div class="skill-actions" data-admin-only hidden>
+        <button class="btn primary" type="button" data-skill-add>Agregar habilidad</button>
+      </div>
+      <ul class="skills-grid reveal" id="skillsGrid" aria-label="Habilidades tecnicas">
       </ul>
     </section>
 
@@ -164,38 +169,11 @@
         <h2>Sistemas reales, funcionales y pensados para crecer.</h2>
       </div>
 
-      <div class="projects-grid">
-        <article class="project-card reveal">
-          <div class="project-topline">
-            <span>Proyecto grande</span>
-            <a href="https://gym-system-cxnq.onrender.com" target="_blank" rel="noreferrer">Abrir</a>
-          </div>
-          <h3>Gym System</h3>
-          <p>
-            Sistema web orientado a la gestion de procesos para un gimnasio, con enfoque en estructura backend, rutas y flujo de datos.
-          </p>
-          <ul class="project-tags" aria-label="Tecnologias usadas en Gym System">
-            <li>Node.js</li>
-            <li>Express.js</li>
-            <li>JavaScript</li>
-          </ul>
-        </article>
+      <div class="project-actions" data-admin-only hidden>
+        <button class="btn primary" type="button" data-project-add>Agregar proyecto</button>
+      </div>
 
-        <article class="project-card reveal">
-          <div class="project-topline">
-            <span>Proyecto grande</span>
-            <a href="https://classmanager-r062.onrender.com" target="_blank" rel="noreferrer">Abrir</a>
-          </div>
-          <h3>Class Manager</h3>
-          <p>
-            Aplicacion para administrar informacion academica y organizar recursos de clase con una experiencia web clara y practica.
-          </p>
-          <ul class="project-tags" aria-label="Tecnologias usadas en Class Manager">
-            <li>Node.js</li>
-            <li>Express.js</li>
-            <li>CSS3</li>
-          </ul>
-        </article>
+      <div class="projects-grid" id="projectsGrid" aria-live="polite">
       </div>
     </section>
 
@@ -205,32 +183,11 @@
         <h2>Mi formacion academica y tecnica.</h2>
       </div>
 
-      <div class="education-grid">
-        <a class="education-card reveal" href="https://www.devseniorcode.com/nosotros/" target="_blank" rel="noreferrer">
-          <div class="education-logo devsenior-logo">
-            <img src="assets/devsenior-logo.webp" alt="Logo de DevSenior Code">
-          </div>
-          <div>
-            <span>Formacion actual</span>
-            <h3>DevSenior Code</h3>
-            <p>
-              Actualmente estoy estudiando JavaScript y desarrollo web para crear soluciones backend mas limpias, robustas y profesionales.
-            </p>
-          </div>
-        </a>
+      <div class="education-actions" data-admin-only hidden>
+        <button class="btn primary" type="button" data-education-add>Agregar formacion</button>
+      </div>
 
-        <a class="education-card reveal" href="https://www.iefranciscodepaulasantander.edu.co" target="_blank" rel="noreferrer">
-          <div class="education-logo school-logo">
-            <img src="assets/francisco-de-paula-santander-logo.jpg" alt="Logo del Colegio Francisco de Paula Santander">
-          </div>
-          <div>
-            <span>Institucion educativa</span>
-            <h3>Colegio Francisco de Paula Santander</h3>
-            <p>
-              Parte de mi formacion academica viene de esta institucion educativa, ubicada en Ibague, Tolima.
-            </p>
-          </div>
-        </a>
+      <div class="education-grid" id="educationGrid" aria-live="polite">
       </div>
     </section>
 
@@ -282,9 +239,173 @@
   </main>
 
   <footer class="site-footer">
-    <p>Juan Pablo Barragan Cortes · Colombia, Tolima-Ibague</p>
+    <p data-profile-footer>Juan Pablo Barragan Cortes - Colombia, Tolima-Ibague</p>
     <a href="#inicio">Volver arriba</a>
   </footer>
+
+  <div class="admin-panel" data-admin-panel hidden>
+    <span>Modo edicion activo</span>
+    <button type="button" data-project-add>Agregar proyecto</button>
+    <button type="button" data-skill-add>Agregar habilidad</button>
+    <button type="button" data-education-add>Agregar formacion</button>
+    <button type="button" data-profile-edit>Editar informacion</button>
+    <button type="button" data-admin-logout>Salir</button>
+  </div>
+
+  <dialog class="modal" id="passwordModal">
+    <form class="modal-card" method="dialog" id="passwordForm">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <p class="eyebrow">Acceso privado</p>
+      <h2>Ingresa la contrasena</h2>
+      <label>
+        Contrasena
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <p class="form-message" data-password-message></p>
+      <button class="btn primary" type="submit">Entrar</button>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="projectModal">
+    <form class="modal-card" method="dialog" id="projectForm">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <p class="eyebrow" data-project-mode>Proyecto</p>
+      <h2>Datos del proyecto</h2>
+      <input type="hidden" name="projectId">
+      <label>
+        Nombre
+        <input type="text" name="name" placeholder="Nombre del proyecto" required>
+      </label>
+      <label>
+        URL
+        <input type="url" name="url" placeholder="https://tu-proyecto.com" required>
+      </label>
+      <label>
+        Descripcion
+        <textarea name="description" rows="4" placeholder="Describe que hace el proyecto" required></textarea>
+      </label>
+      <div class="modal-actions">
+        <button class="btn primary" type="submit">Guardar</button>
+        <button class="btn danger" type="button" data-project-delete hidden>Eliminar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="profileModal">
+    <form class="modal-card" method="dialog" id="profileForm">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <p class="eyebrow">Mi informacion</p>
+      <h2>Editar textos principales</h2>
+      <label>
+        Nombre
+        <input type="text" name="name" required>
+      </label>
+      <label>
+        Frase principal
+        <textarea name="hero" rows="3" required></textarea>
+      </label>
+      <label>
+        Sobre mi
+        <textarea name="about" rows="4" required></textarea>
+      </label>
+      <label>
+        Ubicacion
+        <input type="text" name="location" required>
+      </label>
+      <label>
+        Iniciales del recuadro
+        <input type="text" name="initials" maxlength="4" required>
+      </label>
+      <label>
+        Foto de perfil
+        <input type="file" name="photo" accept="image/*">
+      </label>
+      <button class="btn secondary" type="button" data-photo-remove hidden>Quitar foto</button>
+      <label>
+        Especialidad
+        <input type="text" name="specialty" required>
+      </label>
+      <fieldset class="stats-fieldset">
+        <legend>Datos de la tarjeta lateral</legend>
+        <label>
+          Titulo 1
+          <input type="text" name="statTitle0" required>
+        </label>
+        <label>
+          Descripcion 1
+          <input type="text" name="statText0" required>
+        </label>
+        <label>
+          Titulo 2
+          <input type="text" name="statTitle1" required>
+        </label>
+        <label>
+          Descripcion 2
+          <input type="text" name="statText1" required>
+        </label>
+        <label>
+          Titulo 3
+          <input type="text" name="statTitle2" required>
+        </label>
+        <label>
+          Descripcion 3
+          <input type="text" name="statText2" required>
+        </label>
+      </fieldset>
+      <button class="btn primary" type="submit">Guardar cambios</button>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="skillModal">
+    <form class="modal-card" method="dialog" id="skillForm">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <p class="eyebrow" data-skill-mode>Habilidad</p>
+      <h2>Editar stack tecnico</h2>
+      <input type="hidden" name="skillId">
+      <label>
+        Nombre de la habilidad
+        <input type="text" name="skillName" placeholder="Ej: MongoDB" required>
+      </label>
+      <div class="modal-actions">
+        <button class="btn primary" type="submit">Guardar</button>
+        <button class="btn danger" type="button" data-skill-delete hidden>Eliminar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="educationModal">
+    <form class="modal-card" method="dialog" id="educationForm">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <p class="eyebrow" data-education-mode>Formacion</p>
+      <h2>Editar formacion</h2>
+      <input type="hidden" name="educationId">
+      <input type="hidden" name="currentLogo">
+      <label>
+        Etiqueta
+        <input type="text" name="label" placeholder="Ej: Formacion actual" required>
+      </label>
+      <label>
+        Nombre
+        <input type="text" name="title" placeholder="Ej: DevSenior Code" required>
+      </label>
+      <label>
+        Descripcion
+        <textarea name="description" rows="4" placeholder="Describe esta formacion" required></textarea>
+      </label>
+      <label>
+        Link
+        <input type="url" name="url" placeholder="https://sitio.com" required>
+      </label>
+      <label>
+        Logo o imagen
+        <input type="file" name="logo" accept="image/*">
+      </label>
+      <div class="modal-actions">
+        <button class="btn primary" type="submit">Guardar</button>
+        <button class="btn danger" type="button" data-education-delete hidden>Eliminar</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="script.js"></script>
 </body>
