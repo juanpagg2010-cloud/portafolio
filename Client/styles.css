@@ -1350,6 +1350,28 @@ h3 {
 }
 
 @media (max-width: 860px) {
+  body::before {
+    opacity: 0.26;
+    filter: blur(96px);
+  }
+
+  .ambient-stage::before,
+  .ambient-stage::after {
+    width: 72vmax;
+    height: 72vmax;
+    opacity: 0.2;
+    filter: blur(86px);
+  }
+
+  .ambient-line {
+    opacity: 0.24;
+    min-width: 220px;
+  }
+
+  .code-stream {
+    opacity: 0.55;
+  }
+
   .nav-toggle {
     display: block;
     order: 3;
@@ -1392,8 +1414,8 @@ h3 {
 
   .hero {
     min-height: auto;
-    padding-top: 56px;
-    padding-bottom: 112px;
+    padding-top: 48px;
+    padding-bottom: 84px;
   }
 
   .profile-panel {
@@ -1445,6 +1467,24 @@ h3 {
 }
 
 @media (max-width: 540px) {
+  body::before {
+    opacity: 0.18;
+  }
+
+  .ambient-stage::before {
+    top: 10%;
+    left: -56%;
+  }
+
+  .ambient-stage::after {
+    right: -64%;
+    bottom: 18%;
+  }
+
+  .ambient-line {
+    display: none;
+  }
+
   .site-header {
     width: min(100% - 24px, 1120px);
   }
@@ -1477,6 +1517,10 @@ h3 {
   .text-block p,
   .learning-card p {
     font-size: 1rem;
+  }
+
+  .hero {
+    padding-bottom: 48px;
   }
 
   .hero-actions,
@@ -1535,11 +1579,7 @@ h3 {
   }
 
   .code-stream {
-    bottom: 28px;
-  }
-
-  .code-stream span {
-    font-size: 0.76rem;
+    display: none;
   }
 }
 

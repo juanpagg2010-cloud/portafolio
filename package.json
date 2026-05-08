@@ -1,0 +1,16 @@
+{
+  "name": "portafolio-juan-pablo",
+  "version": "1.0.0",
+  "description": "Portafolio editable de Juan Pablo Barragan Cortes",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "mongodb": "^6.20.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
