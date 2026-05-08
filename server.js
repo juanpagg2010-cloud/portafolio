@@ -203,7 +203,10 @@ async function saveData(data) {
 
 async function serveStatic(request, response) {
   const requestUrl = new URL(request.url, `http://${request.headers.host}`);
-  const cleanPath = decodeURIComponent(requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname);
+  const normalizedPath = requestUrl.pathname.startsWith("/Client/")
+    ? requestUrl.pathname.replace("/Client", "")
+    : requestUrl.pathname;
+  const cleanPath = decodeURIComponent(normalizedPath === "/" ? "/index.html" : normalizedPath);
   const filePath = path.normalize(path.join(ROOT, cleanPath));
 
   if (!filePath.startsWith(ROOT)) {
