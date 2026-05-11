@@ -87,6 +87,7 @@ const projectsGrid = document.querySelector("#projectsGrid");
 const skillsGrid = document.querySelector("#skillsGrid");
 const educationGrid = document.querySelector("#educationGrid");
 const learningTechGrid = document.querySelector("#learningTechGrid");
+const profilePanel = document.querySelector(".profile-panel");
 const adminOpenButtons = document.querySelectorAll("[data-admin-open]");
 const adminOnlyElements = document.querySelectorAll("[data-admin-only]");
 const adminPanel = document.querySelector("[data-admin-panel]");
@@ -418,6 +419,24 @@ navLinks.forEach((link) => {
     mainNav.classList.remove("open");
     navToggle.setAttribute("aria-expanded", "false");
   });
+});
+
+profilePanel.addEventListener("pointermove", (event) => {
+  const rect = profilePanel.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const tiltY = ((x / rect.width) - 0.5) * 10;
+  const tiltX = ((0.5 - y / rect.height)) * 10;
+
+  profilePanel.style.setProperty("--mouse-x", `${x}px`);
+  profilePanel.style.setProperty("--mouse-y", `${y}px`);
+  profilePanel.style.setProperty("--tilt-x", `${tiltX}deg`);
+  profilePanel.style.setProperty("--tilt-y", `${tiltY}deg`);
+});
+
+profilePanel.addEventListener("pointerleave", () => {
+  profilePanel.style.removeProperty("--tilt-x");
+  profilePanel.style.removeProperty("--tilt-y");
 });
 
 adminOpenButtons.forEach((button) => {

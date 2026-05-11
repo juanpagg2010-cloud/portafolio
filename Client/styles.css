@@ -420,18 +420,31 @@ h3 {
   position: relative;
   overflow: hidden;
   padding: 26px;
+  transform-style: preserve-3d;
+  transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
 }
 
 .profile-panel::after {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
-  background: linear-gradient(120deg, transparent 10%, rgba(168, 85, 247, 0.22), rgba(217, 70, 239, 0.18), transparent 72%);
-  opacity: 0.28;
-  transform: translateX(-70%);
-  animation: panelScan 6s ease-in-out infinite;
+  background:
+    radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(217, 70, 239, 0.28), transparent 32%),
+    linear-gradient(135deg, rgba(168, 85, 247, 0.16), transparent 58%);
+  opacity: 0;
+  transition: opacity 220ms ease;
   pointer-events: none;
+}
+
+.profile-panel:hover {
+  border-color: rgba(217, 70, 239, 0.58);
+  box-shadow: 0 28px 110px rgba(91, 33, 182, 0.35), var(--shadow);
+  transform: translateY(-8px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+}
+
+.profile-panel:hover::after {
+  opacity: 1;
 }
 
 .profile-panel::before,
@@ -1264,23 +1277,6 @@ h3 {
 
   to {
     border-color: rgba(168, 85, 247, 0.24);
-  }
-}
-
-@keyframes panelScan {
-  0%,
-  42% {
-    transform: translateX(-80%);
-    opacity: 0;
-  }
-
-  55% {
-    opacity: 0.32;
-  }
-
-  100% {
-    transform: translateX(80%);
-    opacity: 0;
   }
 }
 
