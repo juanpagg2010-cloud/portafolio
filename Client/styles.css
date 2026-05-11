@@ -214,6 +214,8 @@ main,
 }
 
 .admin-entry {
+  position: relative;
+  overflow: hidden;
   min-height: 42px;
   padding: 0 14px;
   border: 1px solid rgba(217, 70, 239, 0.32);
@@ -349,6 +351,8 @@ h3 {
 }
 
 .btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -356,11 +360,12 @@ h3 {
   padding: 0 22px;
   border-radius: 8px;
   font-weight: 800;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease;
 }
 
 .btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 0 26px rgba(217, 70, 239, 0.28), 0 12px 34px rgba(0, 0, 0, 0.28);
 }
 
 .btn.primary {
@@ -393,6 +398,35 @@ h3 {
   border: 1px solid rgba(255, 122, 118, 0.45);
   background: rgba(255, 122, 118, 0.08);
   color: #ffb6b3;
+}
+
+.btn::after,
+.admin-entry::after,
+.project-edit::after,
+.skill-edit::after,
+.education-edit::after,
+.learning-tech-edit::after,
+.admin-panel button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.22) 45%, transparent 72%);
+  opacity: 0;
+  transform: translateX(-120%);
+  transition: transform 420ms ease, opacity 220ms ease;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.btn:hover::after,
+.admin-entry:hover::after,
+.project-edit:hover::after,
+.skill-edit:hover::after,
+.education-edit:hover::after,
+.learning-tech-edit:hover::after,
+.admin-panel button:hover::after {
+  opacity: 1;
+  transform: translateX(120%);
 }
 
 .profile-panel,
@@ -576,6 +610,8 @@ h3 {
 }
 
 .skill-edit {
+  position: relative;
+  overflow: hidden;
   min-height: 32px;
   padding: 0 11px;
   border: 1px solid rgba(217, 70, 239, 0.42);
@@ -586,6 +622,7 @@ h3 {
   font: inherit;
   font-size: 0.82rem;
   font-weight: 800;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .learning-tech-section {
@@ -635,6 +672,8 @@ h3 {
 }
 
 .learning-tech-edit {
+  position: relative;
+  overflow: hidden;
   width: fit-content;
   min-height: 34px;
   padding: 0 12px;
@@ -646,6 +685,7 @@ h3 {
   font: inherit;
   font-size: 0.84rem;
   font-weight: 800;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .process-section {
@@ -831,6 +871,8 @@ h3 {
 }
 
 .project-edit {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -844,6 +886,7 @@ h3 {
   cursor: pointer;
   font: inherit;
   font-weight: 800;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .learning-section {
@@ -930,6 +973,8 @@ h3 {
 }
 
 .education-edit {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -944,6 +989,7 @@ h3 {
   font: inherit;
   font-size: 0.84rem;
   font-weight: 800;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .learning-card {
@@ -1068,6 +1114,8 @@ h3 {
 }
 
 .admin-panel button {
+  position: relative;
+  overflow: hidden;
   min-height: 36px;
   padding: 0 11px;
   border: 1px solid var(--line);
@@ -1078,6 +1126,18 @@ h3 {
   font: inherit;
   font-size: 0.86rem;
   font-weight: 800;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.project-edit:hover,
+.skill-edit:hover,
+.education-edit:hover,
+.learning-tech-edit:hover,
+.admin-panel button:hover {
+  border-color: rgba(217, 70, 239, 0.68);
+  background: rgba(217, 70, 239, 0.14);
+  box-shadow: 0 0 22px rgba(217, 70, 239, 0.24);
+  transform: translateY(-2px);
 }
 
 .modal {
