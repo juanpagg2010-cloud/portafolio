@@ -225,9 +225,10 @@ function renderEducation() {
 function renderLearningTech() {
   learningTechGrid.innerHTML = siteData.learningTech
     .map(
-      (tech) => `
+      (tech, index) => `
         <li>
           <div>
+            <span class="tech-index">${String(index + 1).padStart(2, "0")}</span>
             <h3>${escapeHtml(tech.name)}</h3>
             <p>${escapeHtml(tech.description)}</p>
           </div>
