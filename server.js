@@ -4,13 +4,16 @@ import fsSync from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { MongoClient } from "mongodb";
+import { DEFAULT_DATA } from "./Client/default-data.js";
 
+// En esta parte reconstruyo la ruta del proyecto porque en ES Modules no existe __dirname automaticamente.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.join(__dirname, "Client");
 
 loadEnvFile();
 
+// Aqui se leen las variables de entorno que Render usa para iniciar el servidor y conectar la base de datos.
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "65747985";
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -21,6 +24,7 @@ const DATA_DOCUMENT_ID = "main";
 let mongoClient;
 let mongoCollection;
 
+// Este mapa le dice al navegador que tipo de archivo esta recibiendo: HTML, CSS, JavaScript o imagenes.
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -34,87 +38,7 @@ const mimeTypes = {
   ".ico": "image/x-icon"
 };
 
-const defaultData = {
-  profile: {
-    name: "Juan Pablo Barragan Cortes",
-    initials: "JP",
-    photo: "",
-    specialty: "JavaScript Backend",
-    hero:
-      "Construyo la logica detras de cada aplicacion: APIs seguras, bases de datos eficientes y sistemas backend escalables que hacen que todo funcione.",
-    about:
-      "Soy un desarrollador web especializado en el backend con JavaScript. Me enfoco en tecnologias como Node.js, Express, HTML y CSS, aunque mi principal fortaleza es el desarrollo backend.",
-    location:
-      "Soy de Colombia, Ibague - Tolima, y desde ahi estoy construyendo mi camino en el desarrollo web con enfoque en soluciones backend.",
-    stats: [
-      { title: "Node.js", text: "Runtime principal" },
-      { title: "Express.js", text: "APIs y rutas" },
-      { title: "DevSenior Code", text: "Formacion actual" }
-    ]
-  },
-  skills: [
-    { id: "skill-0", name: "HTML5" },
-    { id: "skill-1", name: "CSS3" },
-    { id: "skill-2", name: "Tailwind CSS" },
-    { id: "skill-3", name: "JavaScript Vanilla" },
-    { id: "skill-4", name: "Node.js" },
-    { id: "skill-5", name: "Express.js" }
-  ],
-  projects: [
-    {
-      id: "gym-system",
-      name: "Gym System",
-      url: "https://gym-system-cxnq.onrender.com",
-      description:
-        "Sistema web orientado a la gestion de procesos para un gimnasio, con enfoque en estructura backend, rutas y flujo de datos."
-    },
-    {
-      id: "class-manager",
-      name: "Class Manager",
-      url: "https://classmanager-r062.onrender.com",
-      description:
-        "Aplicacion para administrar informacion academica y organizar recursos de clase con una experiencia web clara y practica."
-    }
-  ],
-  education: [
-    {
-      id: "devsenior",
-      label: "Formacion actual",
-      title: "DevSenior Code",
-      description:
-        "Actualmente estoy estudiando JavaScript y desarrollo web para crear soluciones backend mas limpias, robustas y profesionales.",
-      url: "https://www.devseniorcode.com/nosotros/",
-      logo: "assets/devsenior-logo.webp"
-    },
-    {
-      id: "fps",
-      label: "Institucion educativa",
-      title: "Colegio Francisco de Paula Santander",
-      description:
-        "Parte de mi formacion academica viene de esta institucion educativa, ubicada en Ibague, Tolima.",
-      url: "https://www.iefranciscodepaulasantander.edu.co",
-      logo: "assets/francisco-de-paula-santander-logo.jpg"
-    }
-  ],
-  learningTech: [
-    {
-      id: "mongo-db",
-      name: "MongoDB",
-      description: "Estoy fortaleciendo el manejo de bases de datos NoSQL para conectar mejor mis APIs."
-    },
-    {
-      id: "typescript",
-      name: "TypeScript",
-      description: "Estoy aprendiendo tipado para escribir codigo JavaScript mas claro, estable y mantenible."
-    },
-    {
-      id: "testing",
-      name: "Testing Backend",
-      description: "Estoy practicando pruebas para validar endpoints, errores y comportamientos del servidor."
-    }
-  ]
-};
-
+// Esta funcion carga el archivo .env cuando trabajo en local; en produccion Render entrega esas variables directamente.
 function loadEnvFile() {
   try {
     const envPath = path.join(__dirname, ".env");
@@ -132,10 +56,11 @@ function loadEnvFile() {
       if (!process.env[key]) process.env[key] = value;
     });
   } catch {
-    // .env is optional. Render should use real environment variables.
+    // El .env es opcional porque en Render las variables se configuran desde el panel.
   }
 }
 
+// Aqui se abre la conexion con MongoDB solo cuando se necesita y luego se reutiliza para no crear conexiones de mas.
 async function getMongoCollection() {
   if (!MONGODB_URI) return null;
   if (mongoCollection) return mongoCollection;
@@ -146,6 +71,7 @@ async function getMongoCollection() {
   return mongoCollection;
 }
 
+// Esta funcion lee el cuerpo JSON de las peticiones y limita el tamano para evitar cargas demasiado grandes.
 async function readJsonBody(request) {
   let body = "";
 
@@ -159,6 +85,7 @@ async function readJsonBody(request) {
   return body ? JSON.parse(body) : {};
 }
 
+// Esta funcion responde siempre en formato JSON y evita que el navegador guarde datos viejos en cache.
 function sendJson(response, statusCode, data) {
   response.writeHead(statusCode, {
     "Content-Type": "application/json; charset=utf-8",
@@ -167,26 +94,28 @@ function sendJson(response, statusCode, data) {
   response.end(JSON.stringify(data));
 }
 
+// Aqui se cargan los datos editables del portafolio; si MongoDB esta vacio, se crean datos iniciales.
 async function getData() {
   try {
     const collection = await getMongoCollection();
-    if (!collection) return defaultData;
+    if (!collection) return DEFAULT_DATA;
 
     const document = await collection.findOne({ _id: DATA_DOCUMENT_ID });
     if (document?.data) return document.data;
 
     await collection.updateOne(
       { _id: DATA_DOCUMENT_ID },
-      { $set: { data: defaultData, updatedAt: new Date() } },
+      { $set: { data: DEFAULT_DATA, updatedAt: new Date() } },
       { upsert: true }
     );
   } catch (error) {
     console.error("MongoDB read failed:", error.message);
   }
 
-  return defaultData;
+  return DEFAULT_DATA;
 }
 
+// Esta funcion guarda en MongoDB todo el documento editable del portafolio.
 async function saveData(data) {
   const collection = await getMongoCollection();
 
@@ -201,6 +130,7 @@ async function saveData(data) {
   );
 }
 
+// Esta funcion entrega los archivos del frontend desde la carpeta Client, como el HTML, CSS, JS e imagenes.
 async function serveStatic(request, response) {
   const requestUrl = new URL(request.url, `http://${request.headers.host}`);
   const normalizedPath = requestUrl.pathname.startsWith("/Client/")
@@ -228,6 +158,7 @@ async function serveStatic(request, response) {
   }
 }
 
+// Este bloque funciona como un router pequeno: primero atiende la API y despues entrega el frontend.
 const server = http.createServer(async (request, response) => {
   try {
     const requestUrl = new URL(request.url, `http://${request.headers.host}`);

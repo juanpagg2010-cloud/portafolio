@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/Client/styles.css">
 </head>
 <body>
+  <!-- Capas visuales del fondo; son decorativas y por eso se ocultan a lectores de pantalla. -->
   <div class="page-noise" aria-hidden="true"></div>
   <div class="ambient-stage" aria-hidden="true">
     <span class="ambient-line"></span>
@@ -18,6 +19,7 @@
     <span class="ambient-line"></span>
   </div>
 
+  <!-- Encabezado fijo con navegacion principal y entrada privada al modo edicion. -->
   <header class="site-header">
     <a class="brand" href="#inicio" aria-label="Ir al inicio">
       <span>JP</span>
@@ -42,6 +44,7 @@
   </header>
 
   <main>
+    <!-- Hero principal: presenta el nombre, la propuesta de valor y el resumen backend. -->
     <section class="hero section" id="inicio">
       <div class="code-stream" aria-hidden="true">
         <span>responsabilidad</span>
@@ -91,6 +94,7 @@
       </aside>
     </section>
 
+    <!-- Seccion personal: cuenta quien soy y parte del contenido se puede editar desde admin. -->
     <section class="section split-section" id="sobre-mi">
       <div class="section-heading reveal">
         <p class="eyebrow">Sobre mi</p>
@@ -109,6 +113,7 @@
       </div>
     </section>
 
+    <!-- Stack tecnico: se renderiza dinamicamente con datos guardados en MongoDB. -->
     <section class="section" id="habilidades">
       <div class="section-heading reveal">
         <p class="eyebrow">Stack tecnico</p>
@@ -121,6 +126,7 @@
       </ul>
     </section>
 
+    <!-- Tecnologias en aprendizaje: se carga dinamicamente desde MongoDB. -->
     <section class="section learning-tech-section" id="aprendiendo">
       <div class="section-heading reveal">
         <p class="eyebrow">Aprendiendo</p>
@@ -133,6 +139,7 @@
       </ul>
     </section>
 
+    <!-- Proceso de trabajo: explica de forma estatica como desarrollo un proyecto. -->
     <section class="section process-section" id="proceso">
       <div class="section-heading reveal">
         <p class="eyebrow">Mi proceso</p>
@@ -179,6 +186,7 @@
       </div>
     </section>
 
+    <!-- Proyectos: las tarjetas se crean con datos editables desde MongoDB. -->
     <section class="section" id="proyectos">
       <div class="section-heading reveal">
         <p class="eyebrow">Proyectos destacados</p>
@@ -193,6 +201,7 @@
       </div>
     </section>
 
+    <!-- Formacion: tarjetas editables cargadas desde MongoDB. -->
     <section class="section learning-section">
       <div class="section-heading reveal">
         <p class="eyebrow">Formacion</p>
@@ -207,6 +216,7 @@
       </div>
     </section>
 
+    <!-- Contacto: enlaces principales con iconos SVG integrados. -->
     <section class="section contact-section" id="contacto">
       <div class="section-heading reveal">
         <p class="eyebrow">Contacto</p>
@@ -254,6 +264,7 @@
     </section>
   </main>
 
+  <!-- Footer: muestra ubicacion, autor y derechos reservados. -->
   <footer class="site-footer">
     <div>
       <p data-profile-footer></p>
@@ -262,6 +273,7 @@
     <a href="#inicio">Volver arriba</a>
   </footer>
 
+  <!-- Panel flotante de administracion: solo aparece despues de validar la contrasena. -->
   <div class="admin-panel" data-admin-panel hidden>
     <span>Modo edicion activo</span>
     <button type="button" data-project-add>Agregar proyecto</button>
@@ -272,6 +284,7 @@
     <button type="button" data-admin-logout>Salir</button>
   </div>
 
+  <!-- Modal de acceso privado para ingresar la contrasena. -->
   <dialog class="modal" id="passwordModal">
     <form class="modal-card" method="dialog" id="passwordForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
@@ -286,6 +299,7 @@
     </form>
   </dialog>
 
+  <!-- Modal para crear o editar proyectos. -->
   <dialog class="modal" id="projectModal">
     <form class="modal-card" method="dialog" id="projectForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
@@ -311,6 +325,7 @@
     </form>
   </dialog>
 
+  <!-- Modal para editar datos del perfil, hero y tarjeta lateral. -->
   <dialog class="modal" id="profileModal">
     <form class="modal-card" method="dialog" id="profileForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
@@ -376,6 +391,7 @@
     </form>
   </dialog>
 
+  <!-- Modal para crear o editar habilidades. -->
   <dialog class="modal" id="skillModal">
     <form class="modal-card" method="dialog" id="skillForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
@@ -393,6 +409,7 @@
     </form>
   </dialog>
 
+  <!-- Modal para crear o editar formacion. -->
   <dialog class="modal" id="educationModal">
     <form class="modal-card" method="dialog" id="educationForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
@@ -427,6 +444,7 @@
     </form>
   </dialog>
 
+  <!-- Modal para crear o editar tecnologias en aprendizaje. -->
   <dialog class="modal" id="learningTechModal">
     <form class="modal-card" method="dialog" id="learningTechForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
@@ -448,6 +466,6 @@
     </form>
   </dialog>
 
-  <script src="/Client/script.js"></script>
+  <script type="module" src="/Client/script.js"></script>
 </body>
 </html>

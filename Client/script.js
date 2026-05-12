@@ -1,84 +1,6 @@
-const fallbackData = {
-  profile: {
-    name: "Juan Pablo Barragan Cortes",
-    initials: "JP",
-    photo: "",
-    specialty: "JavaScript Backend",
-    hero:
-      "Construyo la logica detras de cada aplicacion: APIs seguras, bases de datos eficientes y sistemas backend escalables que hacen que todo funcione.",
-    about:
-      "Soy un desarrollador web especializado en el backend con JavaScript. Me enfoco en tecnologias como Node.js, Express, HTML y CSS, aunque mi principal fortaleza es el desarrollo backend.",
-    location:
-      "Soy de Colombia, Ibague - Tolima, y desde ahi estoy construyendo mi camino en el desarrollo web con enfoque en soluciones backend.",
-    stats: [
-      { title: "Node.js", text: "Runtime principal" },
-      { title: "Express.js", text: "APIs y rutas" },
-      { title: "DevSenior Code", text: "Formacion actual" },
-    ],
-  },
-  skills: [
-    { id: "skill-0", name: "HTML5" },
-    { id: "skill-1", name: "CSS3" },
-    { id: "skill-2", name: "Tailwind CSS" },
-    { id: "skill-3", name: "JavaScript Vanilla" },
-    { id: "skill-4", name: "Node.js" },
-    { id: "skill-5", name: "Express.js" },
-  ],
-  projects: [
-    {
-      id: "gym-system",
-      name: "Gym System",
-      url: "https://gym-system-cxnq.onrender.com",
-      description:
-        "Sistema web orientado a la gestion de procesos para un gimnasio, con enfoque en estructura backend, rutas y flujo de datos.",
-    },
-    {
-      id: "class-manager",
-      name: "Class Manager",
-      url: "https://classmanager-r062.onrender.com",
-      description:
-        "Aplicacion para administrar informacion academica y organizar recursos de clase con una experiencia web clara y practica.",
-    },
-  ],
-  education: [
-    {
-      id: "devsenior",
-      label: "Formacion actual",
-      title: "DevSenior Code",
-      description:
-        "Actualmente estoy estudiando JavaScript y desarrollo web para crear soluciones backend mas limpias, robustas y profesionales.",
-      url: "https://www.devseniorcode.com/nosotros/",
-      logo: "assets/devsenior-logo.webp",
-    },
-    {
-      id: "fps",
-      label: "Institucion educativa",
-      title: "Colegio Francisco de Paula Santander",
-      description:
-        "Parte de mi formacion academica viene de esta institucion educativa, ubicada en Ibague, Tolima.",
-      url: "https://www.iefranciscodepaulasantander.edu.co",
-      logo: "assets/francisco-de-paula-santander-logo.jpg",
-    },
-  ],
-  learningTech: [
-    {
-      id: "mongo-db",
-      name: "MongoDB",
-      description: "Estoy fortaleciendo el manejo de bases de datos NoSQL para conectar mejor mis APIs.",
-    },
-    {
-      id: "typescript",
-      name: "TypeScript",
-      description: "Estoy aprendiendo tipado para escribir codigo JavaScript mas claro, estable y mantenible.",
-    },
-    {
-      id: "testing",
-      name: "Testing Backend",
-      description: "Estoy practicando pruebas para validar endpoints, errores y comportamientos del servidor.",
-    },
-  ],
-};
+import { DEFAULT_DATA } from "./default-data.js";
 
+// Aqui guardo las referencias del HTML que voy a usar para navegar, renderizar datos, abrir modales y controlar el modo admin.
 const navToggle = document.querySelector(".nav-toggle");
 const mainNav = document.querySelector(".main-nav");
 const navLinks = document.querySelectorAll(".main-nav a");
@@ -113,12 +35,13 @@ const learningTechMode = document.querySelector("[data-learning-tech-mode]");
 const learningTechDeleteButton = document.querySelector("[data-learning-tech-delete]");
 const photoRemoveButton = document.querySelector("[data-photo-remove]");
 
-let siteData = structuredClone(fallbackData);
+let siteData = structuredClone(DEFAULT_DATA);
 let adminPassword = "";
 let isAdmin = false;
 let pendingAction = null;
 let revealObserver;
 
+// Esta funcion limpia el texto dinamico antes de meterlo en el HTML para evitar inyecciones o etiquetas no deseadas.
 function escapeHtml(value = "") {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -128,6 +51,7 @@ function escapeHtml(value = "") {
     .replaceAll("'", "&#039;");
 }
 
+// Esta funcion centraliza las peticiones fetch a la API y maneja respuestas JSON.
 async function apiRequest(path, options = {}) {
   const response = await fetch(path, {
     headers: {
@@ -146,14 +70,16 @@ async function apiRequest(path, options = {}) {
   return data;
 }
 
+// Aqui se cargan desde el servidor los datos editables del portafolio.
 async function loadData() {
   try {
     siteData = await apiRequest("/api/data");
   } catch {
-    siteData = structuredClone(fallbackData);
+    siteData = structuredClone(DEFAULT_DATA);
   }
 }
 
+// Esta funcion envia al backend todo el documento actualizado para guardarlo en MongoDB.
 async function saveData() {
   await apiRequest("/api/data", {
     method: "PUT",
@@ -164,6 +90,7 @@ async function saveData() {
   });
 }
 
+// Estas funciones pintan en pantalla la informacion que viene de siteData.
 function renderSkills() {
   skillsGrid.innerHTML = siteData.skills
     .map(
@@ -278,6 +205,7 @@ function renderAll() {
   renderLearningTech();
 }
 
+// Esta funcion activa o desactiva los controles privados de edicion.
 function setAdminMode(value) {
   isAdmin = value;
   document.body.classList.toggle("admin-active", isAdmin);
@@ -300,6 +228,7 @@ function setAdminMode(value) {
   renderAll();
 }
 
+// Antes de editar, esta funcion verifica si ya estamos en modo admin; si no, pide la contrasena.
 function requestPassword(action) {
   if (isAdmin) {
     action();
@@ -312,6 +241,7 @@ function requestPassword(action) {
   passwordModal.showModal();
 }
 
+// Estas funciones abren los modales y rellenan los campos cuando se va a editar algo existente.
 function openProjectModal(project) {
   projectForm.reset();
   projectForm.elements.projectId.value = project?.id || "";
@@ -395,6 +325,7 @@ function setupRevealAnimations() {
   });
 }
 
+// Esta funcion convierte imagenes subidas a texto base64 para poder guardarlas junto con los datos en MongoDB.
 function readImageAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -404,11 +335,36 @@ function readImageAsDataUrl(file) {
   });
 }
 
+// Estas utilidades evitan repetir codigo al leer formularios, crear ids, agregar, editar o eliminar elementos.
+function formText(formData, fieldName) {
+  return formData.get(fieldName).trim();
+}
+
+function createId(prefix) {
+  return `${prefix}-${Date.now()}`;
+}
+
+function upsertItem(collectionName, itemId, item) {
+  if (itemId) {
+    siteData[collectionName] = siteData[collectionName].map((currentItem) =>
+      currentItem.id === itemId ? item : currentItem
+    );
+    return;
+  }
+
+  siteData[collectionName] = [...siteData[collectionName], item];
+}
+
+function deleteItem(collectionName, itemId) {
+  siteData[collectionName] = siteData[collectionName].filter((item) => item.id !== itemId);
+}
+
 async function persistAndRender() {
   await saveData();
   renderAll();
 }
 
+// Interacciones principales del menu y del boton para entrar al modo edicion.
 navToggle.addEventListener("click", () => {
   const isOpen = mainNav.classList.toggle("open");
   navToggle.setAttribute("aria-expanded", String(isOpen));
@@ -452,10 +408,12 @@ document.querySelector("[data-profile-edit]").addEventListener("click", () => {
 
 document.querySelector("[data-admin-logout]").addEventListener("click", () => setAdminMode(false));
 
+// Todos los modales usan este comportamiento comun para cerrarse.
 document.querySelectorAll("[data-modal-close]").forEach((button) => {
   button.addEventListener("click", () => button.closest("dialog").close());
 });
 
+// La contrasena se valida en el backend antes de habilitar las opciones privadas.
 passwordForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const password = passwordForm.elements.password.value;
@@ -475,30 +433,25 @@ passwordForm.addEventListener("submit", async (event) => {
   }
 });
 
+// Cuando se envia un formulario, se actualiza siteData, se guarda en MongoDB y se vuelve a pintar la pagina.
 projectForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(projectForm);
   const projectId = formData.get("projectId");
   const projectData = {
-    id: projectId || `project-${Date.now()}`,
-    name: formData.get("name").trim(),
-    url: formData.get("url").trim(),
-    description: formData.get("description").trim(),
+    id: projectId || createId("project"),
+    name: formText(formData, "name"),
+    url: formText(formData, "url"),
+    description: formText(formData, "description"),
   };
 
-  if (projectId) {
-    siteData.projects = siteData.projects.map((project) => (project.id === projectId ? projectData : project));
-  } else {
-    siteData.projects = [...siteData.projects, projectData];
-  }
-
+  upsertItem("projects", projectId, projectData);
   await persistAndRender();
   projectModal.close();
 });
 
 projectDeleteButton.addEventListener("click", async () => {
-  const projectId = projectForm.elements.projectId.value;
-  siteData.projects = siteData.projects.filter((project) => project.id !== projectId);
+  deleteItem("projects", projectForm.elements.projectId.value);
   await persistAndRender();
   projectModal.close();
 });
@@ -510,17 +463,17 @@ profileForm.addEventListener("submit", async (event) => {
   const photo = photoFile ? await readImageAsDataUrl(photoFile) : siteData.profile.photo;
 
   siteData.profile = {
-    name: formData.get("name").trim(),
-    initials: formData.get("initials").trim(),
+    name: formText(formData, "name"),
+    initials: formText(formData, "initials"),
     photo,
-    specialty: formData.get("specialty").trim(),
-    hero: formData.get("hero").trim(),
-    about: formData.get("about").trim(),
-    location: formData.get("location").trim(),
+    specialty: formText(formData, "specialty"),
+    hero: formText(formData, "hero"),
+    about: formText(formData, "about"),
+    location: formText(formData, "location"),
     stats: [
-      { title: formData.get("statTitle0").trim(), text: formData.get("statText0").trim() },
-      { title: formData.get("statTitle1").trim(), text: formData.get("statText1").trim() },
-      { title: formData.get("statTitle2").trim(), text: formData.get("statText2").trim() },
+      { title: formText(formData, "statTitle0"), text: formText(formData, "statText0") },
+      { title: formText(formData, "statTitle1"), text: formText(formData, "statText1") },
+      { title: formText(formData, "statTitle2"), text: formText(formData, "statText2") },
     ],
   };
 
@@ -540,23 +493,17 @@ skillForm.addEventListener("submit", async (event) => {
   const formData = new FormData(skillForm);
   const skillId = formData.get("skillId");
   const skillData = {
-    id: skillId || `skill-${Date.now()}`,
-    name: formData.get("skillName").trim(),
+    id: skillId || createId("skill"),
+    name: formText(formData, "skillName"),
   };
 
-  if (skillId) {
-    siteData.skills = siteData.skills.map((skill) => (skill.id === skillId ? skillData : skill));
-  } else {
-    siteData.skills = [...siteData.skills, skillData];
-  }
-
+  upsertItem("skills", skillId, skillData);
   await persistAndRender();
   skillModal.close();
 });
 
 skillDeleteButton.addEventListener("click", async () => {
-  const skillId = skillForm.elements.skillId.value;
-  siteData.skills = siteData.skills.filter((skill) => skill.id !== skillId);
+  deleteItem("skills", skillForm.elements.skillId.value);
   await persistAndRender();
   skillModal.close();
 });
@@ -568,27 +515,21 @@ educationForm.addEventListener("submit", async (event) => {
   const logoFile = educationForm.elements.logo.files[0];
   const logo = logoFile ? await readImageAsDataUrl(logoFile) : formData.get("currentLogo");
   const educationData = {
-    id: educationId || `education-${Date.now()}`,
-    label: formData.get("label").trim(),
-    title: formData.get("title").trim(),
-    description: formData.get("description").trim(),
-    url: formData.get("url").trim(),
+    id: educationId || createId("education"),
+    label: formText(formData, "label"),
+    title: formText(formData, "title"),
+    description: formText(formData, "description"),
+    url: formText(formData, "url"),
     logo,
   };
 
-  if (educationId) {
-    siteData.education = siteData.education.map((item) => (item.id === educationId ? educationData : item));
-  } else {
-    siteData.education = [...siteData.education, educationData];
-  }
-
+  upsertItem("education", educationId, educationData);
   await persistAndRender();
   educationModal.close();
 });
 
 educationDeleteButton.addEventListener("click", async () => {
-  const educationId = educationForm.elements.educationId.value;
-  siteData.education = siteData.education.filter((item) => item.id !== educationId);
+  deleteItem("education", educationForm.elements.educationId.value);
   await persistAndRender();
   educationModal.close();
 });
@@ -598,28 +539,23 @@ learningTechForm.addEventListener("submit", async (event) => {
   const formData = new FormData(learningTechForm);
   const techId = formData.get("techId");
   const techData = {
-    id: techId || `learning-tech-${Date.now()}`,
-    name: formData.get("techName").trim(),
-    description: formData.get("techDescription").trim(),
+    id: techId || createId("learning-tech"),
+    name: formText(formData, "techName"),
+    description: formText(formData, "techDescription"),
   };
 
-  if (techId) {
-    siteData.learningTech = siteData.learningTech.map((tech) => (tech.id === techId ? techData : tech));
-  } else {
-    siteData.learningTech = [...siteData.learningTech, techData];
-  }
-
+  upsertItem("learningTech", techId, techData);
   await persistAndRender();
   learningTechModal.close();
 });
 
 learningTechDeleteButton.addEventListener("click", async () => {
-  const techId = learningTechForm.elements.techId.value;
-  siteData.learningTech = siteData.learningTech.filter((tech) => tech.id !== techId);
+  deleteItem("learningTech", learningTechForm.elements.techId.value);
   await persistAndRender();
   learningTechModal.close();
 });
 
+// Uso delegacion de eventos porque las tarjetas se crean dinamicamente despues de cargar los datos.
 projectsGrid.addEventListener("click", (event) => {
   const editButton = event.target.closest("[data-project-edit]");
   if (!editButton) return;
@@ -652,6 +588,7 @@ skillsGrid.addEventListener("click", (event) => {
   if (skill) requestPassword(() => openSkillModal(skill));
 });
 
+// Este observador marca en el menu la seccion que el usuario esta viendo.
 const sectionObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -667,6 +604,7 @@ const sectionObserver = new IntersectionObserver(
   }
 );
 
+// Secuencia inicial: observa secciones, carga datos, pinta contenido y activa animaciones de entrada.
 async function init() {
   sections.forEach((section) => sectionObserver.observe(section));
   await loadData();
