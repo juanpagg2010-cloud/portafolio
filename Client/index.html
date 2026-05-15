@@ -300,7 +300,7 @@
   </dialog>
 
   <!-- Modal para crear o editar proyectos. -->
-  <dialog class="modal" id="projectModal">
+  <dialog class="modal project-editor-modal" id="projectModal">
     <form class="modal-card" method="dialog" id="projectForm">
       <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
       <p class="eyebrow" data-project-mode>Proyecto</p>
@@ -321,6 +321,87 @@
       <label>
         Tecnologias usadas
         <input type="text" name="stack" placeholder="Node.js, Express.js, JavaScript, Tailwind CSS" required>
+      </label>
+      <fieldset class="stats-fieldset project-detail-fieldset">
+        <legend>Detalle profesional</legend>
+        <label>
+          Etiqueta superior
+          <input type="text" name="badge" placeholder="Ej: Gym System" required>
+        </label>
+        <label>
+          Titulo grande
+          <textarea name="headline" rows="3" placeholder="Titulo que aparece en Ver mas informacion" required></textarea>
+        </label>
+        <label>
+          Descripcion del detalle
+          <textarea name="overview" rows="4" placeholder="Explica el proyecto con mas profundidad" required></textarea>
+        </label>
+        <label>
+          Video actual o URL
+          <input type="text" name="video" placeholder="/Client/assets/projects/demo.mp4 o https://...">
+        </label>
+        <label>
+          Subir nuevo video
+          <input type="file" name="videoFile" accept="video/mp4,video/webm,video/ogg">
+        </label>
+      </fieldset>
+      <fieldset class="stats-fieldset project-detail-fieldset">
+        <legend>Metricas</legend>
+        <label>
+          Valor 1
+          <input type="text" name="metricValue0" placeholder="3" required>
+        </label>
+        <label>
+          Etiqueta 1
+          <input type="text" name="metricLabel0" placeholder="Roles" required>
+        </label>
+        <label>
+          Valor 2
+          <input type="text" name="metricValue1" placeholder="24/7" required>
+        </label>
+        <label>
+          Etiqueta 2
+          <input type="text" name="metricLabel1" placeholder="Acceso" required>
+        </label>
+        <label>
+          Valor 3
+          <input type="text" name="metricValue2" placeholder="Web" required>
+        </label>
+        <label>
+          Etiqueta 3
+          <input type="text" name="metricLabel2" placeholder="Gestion" required>
+        </label>
+      </fieldset>
+      <fieldset class="stats-fieldset project-detail-fieldset">
+        <legend>Tarjetas del detalle</legend>
+        <label>
+          Titulo tarjeta 1
+          <input type="text" name="highlightTitle0" required>
+        </label>
+        <label>
+          Texto tarjeta 1
+          <textarea name="highlightText0" rows="3" required></textarea>
+        </label>
+        <label>
+          Titulo tarjeta 2
+          <input type="text" name="highlightTitle1" required>
+        </label>
+        <label>
+          Texto tarjeta 2
+          <textarea name="highlightText1" rows="3" required></textarea>
+        </label>
+        <label>
+          Titulo tarjeta 3
+          <input type="text" name="highlightTitle2" required>
+        </label>
+        <label>
+          Texto tarjeta 3
+          <textarea name="highlightText2" rows="3" required></textarea>
+        </label>
+      </fieldset>
+      <label>
+        Resultado final
+        <textarea name="result" rows="4" placeholder="Que demuestra o que lograste con este proyecto" required></textarea>
       </label>
       <div class="modal-actions">
         <button class="btn primary" type="submit">Guardar</button>

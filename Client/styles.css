@@ -1244,6 +1244,15 @@ h3 {
   color: var(--text);
 }
 
+.project-editor-modal {
+  width: min(820px, calc(100% - 28px));
+}
+
+.project-editor-modal .modal-card {
+  max-height: min(88vh, 920px);
+  overflow: auto;
+}
+
 .modal::backdrop {
   background: rgba(3, 7, 13, 0.78);
   backdrop-filter: blur(8px);
@@ -1294,6 +1303,16 @@ h3 {
   font-size: 0.82rem;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.project-detail-fieldset {
+  margin-top: 8px;
+}
+
+.project-detail-fieldset label:has(textarea),
+.project-detail-fieldset label:has(input[type="file"]),
+.project-detail-fieldset label:has(input[name="video"]) {
+  grid-column: 1 / -1;
 }
 
 .modal-card input,

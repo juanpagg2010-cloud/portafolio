@@ -42,6 +42,7 @@ let adminPassword = "";
 let isAdmin = false;
 let pendingAction = null;
 let revealObserver;
+const MAX_VIDEO_UPLOAD_SIZE = 7 * 1024 * 1024;
 
 // Estos detalles enriquecen los proyectos principales aunque MongoDB tenga guardada una version antigua sin campos extra.
 const PROJECT_DETAIL_FALLBACKS = {
@@ -162,6 +163,23 @@ function parseStack(value = "") {
     .split(",")
     .map((item) => item.trim())
     .filter(Boolean);
+}
+
+// Estas pequenas lecturas evitan repetir nombres largos al llenar o guardar el formulario de proyectos.
+function setProjectFormDetail(detail, project) {
+  projectForm.elements.badge.value = detail?.badge || project?.name || "Proyecto destacado";
+  projectForm.elements.headline.value = detail?.headline || project?.name || "";
+  projectForm.elements.overview.value = detail?.overview || project?.description || "";
+  projectForm.elements.video.value = detail?.video || "";
+  projectForm.elements.videoFile.value = "";
+  projectForm.elements.result.value = detail?.result || "";
+
+  for (let index = 0; index < 3; index += 1) {
+    projectForm.elements[`metricValue${index}`].value = detail?.metrics?.[index]?.value || "";
+    projectForm.elements[`metricLabel${index}`].value = detail?.metrics?.[index]?.label || "";
+    projectForm.elements[`highlightTitle${index}`].value = detail?.highlights?.[index]?.title || "";
+    projectForm.elements[`highlightText${index}`].value = detail?.highlights?.[index]?.text || "";
+  }
 }
 
 // Esta funcion centraliza las peticiones fetch a la API y maneja respuestas JSON.
@@ -426,13 +444,33 @@ function requestPassword(action) {
 
 // Estas funciones abren los modales y rellenan los campos cuando se va a editar algo existente.
 function openProjectModal(project) {
-  const detail = project ? getProjectDetail(project) : null;
+  const detail = project
+    ? getProjectDetail(project)
+    : {
+        badge: "Proyecto destacado",
+        headline: "",
+        overview: "",
+        video: "",
+        metrics: [
+          { value: "API", label: "Backend" },
+          { value: "JS", label: "Logica" },
+          { value: "Web", label: "Deploy" },
+        ],
+        highlights: [
+          { title: "Objetivo", text: "" },
+          { title: "Estructura", text: "" },
+          { title: "Aprendizaje", text: "" },
+        ],
+        result: "",
+        stack: ["Node.js", "Express.js", "JavaScript", "Tailwind CSS"],
+      };
   projectForm.reset();
   projectForm.elements.projectId.value = project?.id || "";
   projectForm.elements.name.value = project?.name || "";
   projectForm.elements.url.value = project?.url || "";
   projectForm.elements.description.value = project?.description || "";
   projectForm.elements.stack.value = detail?.stack?.join(", ") || "Node.js, Express.js, JavaScript, Tailwind CSS";
+  setProjectFormDetail(detail, project);
   projectMode.textContent = project ? "Editar proyecto" : "Agregar proyecto";
   projectDeleteButton.hidden = !project;
   projectModal.showModal();
@@ -510,7 +548,7 @@ function setupRevealAnimations() {
   });
 }
 
-// Esta funcion convierte imagenes subidas a texto base64 para poder guardarlas junto con los datos en MongoDB.
+// Esta funcion convierte archivos subidos a texto base64 para poder guardarlos junto con los datos en MongoDB.
 function readImageAsDataUrl(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -626,6 +664,18 @@ projectForm.addEventListener("submit", async (event) => {
   const stack = parseStack(formData.get("stack"));
   const currentProject = siteData.projects.find((project) => project.id === projectId);
   const currentDetail = currentProject?.detail || {};
+  const videoFile = projectForm.elements.videoFile.files[0];
+  let video = formText(formData, "video");
+
+  if (videoFile) {
+    if (videoFile.size > MAX_VIDEO_UPLOAD_SIZE) {
+      alert("El video es muy pesado para guardarlo en MongoDB. Usa un video mas liviano o pega una URL publica del video.");
+      return;
+    }
+
+    video = await readImageAsDataUrl(videoFile);
+  }
+
   const projectData = {
     id: projectId || createId("project"),
     name: formText(formData, "name"),
@@ -634,6 +684,21 @@ projectForm.addEventListener("submit", async (event) => {
     stack,
     detail: {
       ...currentDetail,
+      badge: formText(formData, "badge"),
+      headline: formText(formData, "headline"),
+      overview: formText(formData, "overview"),
+      video,
+      metrics: [
+        { value: formText(formData, "metricValue0"), label: formText(formData, "metricLabel0") },
+        { value: formText(formData, "metricValue1"), label: formText(formData, "metricLabel1") },
+        { value: formText(formData, "metricValue2"), label: formText(formData, "metricLabel2") },
+      ],
+      highlights: [
+        { title: formText(formData, "highlightTitle0"), text: formText(formData, "highlightText0") },
+        { title: formText(formData, "highlightTitle1"), text: formText(formData, "highlightText1") },
+        { title: formText(formData, "highlightTitle2"), text: formText(formData, "highlightText2") },
+      ],
+      result: formText(formData, "result"),
       stack,
     },
   };
