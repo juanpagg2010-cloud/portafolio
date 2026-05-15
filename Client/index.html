@@ -318,11 +318,23 @@
         Descripcion
         <textarea name="description" rows="4" placeholder="Describe que hace el proyecto" required></textarea>
       </label>
+      <label>
+        Tecnologias usadas
+        <input type="text" name="stack" placeholder="Node.js, Express.js, JavaScript, Tailwind CSS" required>
+      </label>
       <div class="modal-actions">
         <button class="btn primary" type="submit">Guardar</button>
         <button class="btn danger" type="button" data-project-delete hidden>Eliminar</button>
       </div>
     </form>
+  </dialog>
+
+  <!-- Modal publico de detalle: convierte cada proyecto en una vista mas profesional con video, metricas y stack. -->
+  <dialog class="modal project-detail-modal" id="projectDetailModal">
+    <article class="modal-card project-detail-card">
+      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
+      <div id="projectDetailContent"></div>
+    </article>
   </dialog>
 
   <!-- Modal para editar datos del perfil, hero y tarjeta lateral. -->

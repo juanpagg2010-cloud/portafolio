@@ -33,6 +33,36 @@ export const DEFAULT_DATA = {
       url: "https://gym-system-cxnq.onrender.com",
       description:
         "Sistema web orientado a la gestion de procesos para un gimnasio, con enfoque en estructura backend, rutas y flujo de datos.",
+      stack: ["Node.js", "Express.js", "JavaScript", "Tailwind CSS"],
+      detail: {
+        badge: "Gym System",
+        headline: "Centro de mando para membresias, agenda y caja en vivo.",
+        overview:
+          "Una plataforma pensada para administrar la operacion de un gimnasio desde una interfaz clara: usuarios, membresias, roles y seguimiento quedan organizados en un mismo flujo.",
+        video: "/Client/assets/projects/gym-system-demo.mp4",
+        metrics: [
+          { value: "3", label: "Roles" },
+          { value: "24/7", label: "Acceso" },
+          { value: "Web", label: "Gestion" },
+        ],
+        highlights: [
+          {
+            title: "Roles organizados",
+            text: "Admin, miembro y entrenador tienen una experiencia pensada para sus funciones.",
+          },
+          {
+            title: "Membresias",
+            text: "Control de planes, estados y procesos importantes para la operacion diaria.",
+          },
+          {
+            title: "Seguimiento claro",
+            text: "La informacion queda visible para tomar decisiones y mantener ordenado el sistema.",
+          },
+        ],
+        stack: ["Node.js", "Express.js", "JavaScript", "Tailwind CSS"],
+        result:
+          "Este proyecto muestra mi capacidad para estructurar un sistema backend con rutas, datos y pantallas conectadas a una experiencia real.",
+      },
     },
     {
       id: "class-manager",
@@ -40,6 +70,36 @@ export const DEFAULT_DATA = {
       url: "https://classmanager-r062.onrender.com",
       description:
         "Aplicacion para administrar informacion academica y organizar recursos de clase con una experiencia web clara y practica.",
+      stack: ["Node.js", "Express.js", "JavaScript", "HTML5", "Tailwind CSS"],
+      detail: {
+        badge: "ClassManager",
+        headline: "Gestion academica moderna para usuarios, tareas y seguimiento.",
+        overview:
+          "Aplicacion web enfocada en administradores, profesores y estudiantes, con una experiencia clara para organizar informacion academica y acompanar el aprendizaje.",
+        video: "/Client/assets/projects/classmanager-demo.mp4",
+        metrics: [
+          { value: "3", label: "Roles" },
+          { value: "24/7", label: "Acceso" },
+          { value: "IA", label: "Apoyo" },
+        ],
+        highlights: [
+          {
+            title: "Gestion por roles",
+            text: "Cada tipo de usuario entra a una experiencia con funciones pensadas para su necesidad.",
+          },
+          {
+            title: "Aprendizaje real",
+            text: "El sistema ayuda a revisar tareas, entregas y avance academico de forma organizada.",
+          },
+          {
+            title: "Interfaz clara",
+            text: "La informacion se presenta con orden para que el usuario encuentre rapido lo importante.",
+          },
+        ],
+        stack: ["Node.js", "Express.js", "JavaScript", "HTML5", "Tailwind CSS"],
+        result:
+          "Este proyecto refleja una solucion completa donde backend, datos y frontend trabajan juntos para un flujo educativo funcional.",
+      },
     },
   ],
   education: [

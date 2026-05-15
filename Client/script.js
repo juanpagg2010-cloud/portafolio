@@ -16,6 +16,8 @@ const passwordModal = document.querySelector("#passwordModal");
 const passwordForm = document.querySelector("#passwordForm");
 const projectModal = document.querySelector("#projectModal");
 const projectForm = document.querySelector("#projectForm");
+const projectDetailModal = document.querySelector("#projectDetailModal");
+const projectDetailContent = document.querySelector("#projectDetailContent");
 const profileModal = document.querySelector("#profileModal");
 const profileForm = document.querySelector("#profileForm");
 const skillModal = document.querySelector("#skillModal");
@@ -41,6 +43,68 @@ let isAdmin = false;
 let pendingAction = null;
 let revealObserver;
 
+// Estos detalles enriquecen los proyectos principales aunque MongoDB tenga guardada una version antigua sin campos extra.
+const PROJECT_DETAIL_FALLBACKS = {
+  "gym-system": {
+    badge: "Gym System",
+    headline: "Centro de mando para membresias, agenda y caja en vivo.",
+    overview:
+      "Una plataforma pensada para administrar la operacion de un gimnasio desde una interfaz clara: usuarios, membresias, roles y seguimiento quedan organizados en un mismo flujo.",
+    video: "/Client/assets/projects/gym-system-demo.mp4",
+    metrics: [
+      { value: "3", label: "Roles" },
+      { value: "24/7", label: "Acceso" },
+      { value: "Web", label: "Gestion" },
+    ],
+    highlights: [
+      {
+        title: "Roles organizados",
+        text: "Admin, miembro y entrenador tienen una experiencia pensada para sus funciones.",
+      },
+      {
+        title: "Membresias",
+        text: "Control de planes, estados y procesos importantes para la operacion diaria.",
+      },
+      {
+        title: "Seguimiento claro",
+        text: "La informacion queda visible para tomar decisiones y mantener ordenado el sistema.",
+      },
+    ],
+    stack: ["Node.js", "Express.js", "JavaScript", "Tailwind CSS"],
+    result:
+      "Este proyecto muestra mi capacidad para estructurar un sistema backend con rutas, datos y pantallas conectadas a una experiencia real.",
+  },
+  "class-manager": {
+    badge: "ClassManager",
+    headline: "Gestion academica moderna para usuarios, tareas y seguimiento.",
+    overview:
+      "Aplicacion web enfocada en administradores, profesores y estudiantes, con una experiencia clara para organizar informacion academica y acompanar el aprendizaje.",
+    video: "/Client/assets/projects/classmanager-demo.mp4",
+    metrics: [
+      { value: "3", label: "Roles" },
+      { value: "24/7", label: "Acceso" },
+      { value: "IA", label: "Apoyo" },
+    ],
+    highlights: [
+      {
+        title: "Gestion por roles",
+        text: "Cada tipo de usuario entra a una experiencia con funciones pensadas para su necesidad.",
+      },
+      {
+        title: "Aprendizaje real",
+        text: "El sistema ayuda a revisar tareas, entregas y avance academico de forma organizada.",
+      },
+      {
+        title: "Interfaz clara",
+        text: "La informacion se presenta con orden para que el usuario encuentre rapido lo importante.",
+      },
+    ],
+    stack: ["Node.js", "Express.js", "JavaScript", "HTML5", "Tailwind CSS"],
+    result:
+      "Este proyecto refleja una solucion completa donde backend, datos y frontend trabajan juntos para un flujo educativo funcional.",
+  },
+};
+
 // Esta funcion limpia el texto dinamico antes de meterlo en el HTML para evitar inyecciones o etiquetas no deseadas.
 function escapeHtml(value = "") {
   return String(value)
@@ -49,6 +113,55 @@ function escapeHtml(value = "") {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+// Estos dos proyectos fueron maquetados con Tailwind; si MongoDB trae el dato viejo, aqui lo corrijo al pintar.
+function normalizeProjectStack(project, stack = []) {
+  const usesTailwind = ["gym-system", "class-manager"].includes(project.id);
+
+  return stack.map((item) => {
+    if (usesTailwind && item.toLowerCase() === "css3") return "Tailwind CSS";
+    return item;
+  });
+}
+
+// Aqui se busca el detalle profesional del proyecto; si no existe, se construye una version basica con sus datos.
+function getProjectDetail(project) {
+  const fallbackKey = Object.keys(PROJECT_DETAIL_FALLBACKS).find(
+    (key) => project.id === key || project.name.toLowerCase().replace(/\s+/g, "-") === key
+  );
+  const fallback = fallbackKey ? PROJECT_DETAIL_FALLBACKS[fallbackKey] : {};
+  const projectStack = project.stack || project.detail?.stack || fallback.stack || ["JavaScript", "Backend", "Web"];
+
+  return {
+    badge: "Proyecto destacado",
+    headline: project.name,
+    overview: project.description,
+    video: "",
+    metrics: [
+      { value: "API", label: "Backend" },
+      { value: "JS", label: "Logica" },
+      { value: "Web", label: "Deploy" },
+    ],
+    highlights: [
+      { title: "Objetivo", text: project.description },
+      { title: "Estructura", text: "Proyecto organizado para crecer y seguir mejorando con nuevas funciones." },
+      { title: "Aprendizaje", text: "Me ayudo a fortalecer backend, datos, rutas y experiencia de usuario." },
+    ],
+    stack: ["JavaScript", "Backend", "Web"],
+    result: "Proyecto construido para practicar soluciones reales y mostrar una base tecnica funcional.",
+    ...fallback,
+    ...(project.detail || {}),
+    stack: normalizeProjectStack(project, projectStack),
+  };
+}
+
+// El stack se escribe separado por comas en el formulario y aqui lo convierto en una lista limpia.
+function parseStack(value = "") {
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
 }
 
 // Esta funcion centraliza las peticiones fetch a la API y maneja respuestas JSON.
@@ -106,8 +219,11 @@ function renderSkills() {
 
 function renderProjects() {
   projectsGrid.innerHTML = siteData.projects
-    .map(
-      (project) => `
+    .map((project) => {
+      const detail = getProjectDetail(project);
+      const tags = detail.stack.slice(0, 4).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+
+      return `
         <article class="project-card reveal visible" data-project-id="${escapeHtml(project.id)}">
           <div class="project-topline">
             <span>Proyecto</span>
@@ -116,14 +232,15 @@ function renderProjects() {
           <h3>${escapeHtml(project.name)}</h3>
           <p>${escapeHtml(project.description)}</p>
           <ul class="project-tags" aria-label="Tecnologias usadas en ${escapeHtml(project.name)}">
-            <li>Backend</li>
-            <li>JavaScript</li>
-            <li>Web</li>
+            ${tags}
           </ul>
-          <button class="project-edit" type="button" data-project-edit="${escapeHtml(project.id)}" ${isAdmin ? "" : "hidden"}>Editar</button>
+          <div class="project-card-actions">
+            <button class="project-info" type="button" data-project-info="${escapeHtml(project.id)}">Ver mas informacion</button>
+            <button class="project-edit" type="button" data-project-edit="${escapeHtml(project.id)}" ${isAdmin ? "" : "hidden"}>Editar</button>
+          </div>
         </article>
-      `
-    )
+      `;
+    })
     .join("");
 }
 
@@ -205,6 +322,72 @@ function renderAll() {
   renderLearningTech();
 }
 
+// Este modal transforma una tarjeta corta en una presentacion completa con video, metricas y puntos clave.
+function openProjectDetail(project) {
+  const detail = getProjectDetail(project);
+  const metrics = detail.metrics
+    .map(
+      (metric) => `
+        <li>
+          <strong>${escapeHtml(metric.value)}</strong>
+          <span>${escapeHtml(metric.label)}</span>
+        </li>
+      `
+    )
+    .join("");
+  const highlights = detail.highlights
+    .map(
+      (highlight) => `
+        <article>
+          <span>${escapeHtml(highlight.title)}</span>
+          <p>${escapeHtml(highlight.text)}</p>
+        </article>
+      `
+    )
+    .join("");
+  const stack = detail.stack.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+
+  projectDetailContent.innerHTML = `
+    <div class="project-detail-hero">
+      <div class="project-detail-copy">
+        <p class="eyebrow">${escapeHtml(detail.badge)}</p>
+        <h2>${escapeHtml(detail.headline)}</h2>
+        <p>${escapeHtml(detail.overview)}</p>
+        <div class="project-detail-actions">
+          <a class="btn primary" href="${escapeHtml(project.url)}" target="_blank" rel="noreferrer">Abrir proyecto</a>
+        </div>
+      </div>
+      <div class="project-detail-media">
+        ${
+          detail.video
+            ? `<video src="${escapeHtml(detail.video)}" controls muted playsinline preload="metadata"></video>`
+            : `<div class="project-detail-placeholder">${escapeHtml(project.name)}</div>`
+        }
+      </div>
+    </div>
+
+    <ul class="project-detail-metrics" aria-label="Datos clave de ${escapeHtml(project.name)}">
+      ${metrics}
+    </ul>
+
+    <div class="project-detail-grid">
+      ${highlights}
+    </div>
+
+    <div class="project-detail-bottom">
+      <div>
+        <span>Resultado</span>
+        <p>${escapeHtml(detail.result)}</p>
+      </div>
+      <ul class="project-detail-stack" aria-label="Stack usado">
+        ${stack}
+      </ul>
+    </div>
+  `;
+
+  projectDetailModal.showModal();
+}
+
 // Esta funcion activa o desactiva los controles privados de edicion.
 function setAdminMode(value) {
   isAdmin = value;
@@ -243,11 +426,13 @@ function requestPassword(action) {
 
 // Estas funciones abren los modales y rellenan los campos cuando se va a editar algo existente.
 function openProjectModal(project) {
+  const detail = project ? getProjectDetail(project) : null;
   projectForm.reset();
   projectForm.elements.projectId.value = project?.id || "";
   projectForm.elements.name.value = project?.name || "";
   projectForm.elements.url.value = project?.url || "";
   projectForm.elements.description.value = project?.description || "";
+  projectForm.elements.stack.value = detail?.stack?.join(", ") || "Node.js, Express.js, JavaScript, Tailwind CSS";
   projectMode.textContent = project ? "Editar proyecto" : "Agregar proyecto";
   projectDeleteButton.hidden = !project;
   projectModal.showModal();
@@ -438,11 +623,19 @@ projectForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(projectForm);
   const projectId = formData.get("projectId");
+  const stack = parseStack(formData.get("stack"));
+  const currentProject = siteData.projects.find((project) => project.id === projectId);
+  const currentDetail = currentProject?.detail || {};
   const projectData = {
     id: projectId || createId("project"),
     name: formText(formData, "name"),
     url: formText(formData, "url"),
     description: formText(formData, "description"),
+    stack,
+    detail: {
+      ...currentDetail,
+      stack,
+    },
   };
 
   upsertItem("projects", projectId, projectData);
@@ -557,6 +750,13 @@ learningTechDeleteButton.addEventListener("click", async () => {
 
 // Uso delegacion de eventos porque las tarjetas se crean dinamicamente despues de cargar los datos.
 projectsGrid.addEventListener("click", (event) => {
+  const infoButton = event.target.closest("[data-project-info]");
+  if (infoButton) {
+    const project = siteData.projects.find((item) => item.id === infoButton.dataset.projectInfo);
+    if (project) openProjectDetail(project);
+    return;
+  }
+
   const editButton = event.target.closest("[data-project-edit]");
   if (!editButton) return;
 
