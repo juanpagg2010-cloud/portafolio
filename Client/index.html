@@ -1,564 +1,819 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portafolio de Juan Pablo Barragan Cortes, desarrollador backend especializado en JavaScript, Node.js y Express.js.">
-  <title>Juan Pablo Barragan Cortes | Backend Developer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/Client/styles.css">
-</head>
-<body>
-  <!-- Capas visuales del fondo; son decorativas y por eso se ocultan a lectores de pantalla. -->
-  <div class="page-noise" aria-hidden="true"></div>
-  <div class="ambient-stage" aria-hidden="true">
-    <span class="ambient-line"></span>
-    <span class="ambient-line"></span>
-    <span class="ambient-line"></span>
-  </div>
-
-  <!-- Encabezado fijo con navegacion principal y entrada privada al modo edicion. -->
-  <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="Ir al inicio">
-      <span>JP</span>
-    </a>
-
-    <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <nav class="main-nav" aria-label="Navegacion principal">
-      <a href="#sobre-mi">Sobre mi</a>
-      <a href="#habilidades">Habilidades</a>
-      <a href="#aprendiendo">Aprendiendo</a>
-      <a href="#proceso">Proceso</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-
-    <button class="admin-entry" type="button" data-admin-open>Editar</button>
-  </header>
-
-  <main>
-    <!-- Hero principal: presenta el nombre, la propuesta de valor y el resumen backend. -->
-    <section class="hero section" id="inicio">
-      <div class="code-stream" aria-hidden="true">
-        <span>responsabilidad</span>
-        <span>constancia</span>
-        <span>ganas de aprender</span>
-        <span>mentalidad de crecimiento</span>
-        <span>soluciones robustas</span>
-        <span>mejora continua</span>
-        <span>compromiso</span>
-      </div>
-
-      <div class="hero-content reveal">
-        <p class="eyebrow">Backend Developer</p>
-        <h1 data-profile-name>Juan Pablo Barragan Cortes</h1>
-        <p class="hero-copy" data-profile-hero>
-          Construyo la logica detras de cada aplicacion: APIs seguras, bases de datos eficientes y sistemas backend escalables que hacen que todo funcione.
-        </p>
-        <div class="hero-actions">
-          <a class="btn primary" href="#proyectos">Ver proyectos</a>
-          <a class="btn secondary" href="https://wa.me/573237120228" target="_blank" rel="noreferrer">Contactame</a>
-        </div>
-      </div>
-
-      <aside class="profile-panel reveal" aria-label="Resumen profesional">
-        <div class="avatar-placeholder">
-          <img data-profile-photo src="" alt="Foto de Juan Pablo Barragan Cortes" hidden>
-          <span data-profile-initials>JP</span>
-        </div>
-        <div>
-          <p class="panel-label">Especialidad</p>
-          <h2 data-profile-specialty>JavaScript Backend</h2>
-        </div>
-        <ul class="quick-stats">
-          <li>
-            <strong data-stat-title="0">Node.js</strong>
-            <span data-stat-text="0">Runtime principal</span>
-          </li>
-          <li>
-            <strong data-stat-title="1">Express.js</strong>
-            <span data-stat-text="1">APIs y rutas</span>
-          </li>
-          <li>
-            <strong data-stat-title="2">DevSenior Code</strong>
-            <span data-stat-text="2">Formacion actual</span>
-          </li>
-        </ul>
-      </aside>
-    </section>
-
-    <!-- Seccion personal: cuenta quien soy y parte del contenido se puede editar desde admin. -->
-    <section class="section split-section" id="sobre-mi">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Sobre mi</p>
-        <h2>Trabajo desde la base que sostiene el producto.</h2>
-      </div>
-      <div class="text-block reveal">
-        <p data-profile-about>
-          Soy un desarrollador web especializado en el backend con JavaScript. Me enfoco en tecnologias como Node.js, Express, HTML y CSS, aunque mi principal fortaleza es el desarrollo backend.
-        </p>
-        <p data-profile-location>
-          Soy de Colombia, Ibague - Tolima, y desde ahi estoy construyendo mi camino en el desarrollo web con enfoque en soluciones backend.
-        </p>
-        <p>
-          Estoy en constante formacion, buscando mejorar mis estandares, aprender otros lenguajes y profundizar mis habilidades en JavaScript a un nivel mas avanzado. En la industria, busco aportar soluciones robustas y seguir creciendo como profesional en el ambito del desarrollo.
-        </p>
-      </div>
-    </section>
-
-    <!-- Stack tecnico: se renderiza dinamicamente con datos guardados en MongoDB. -->
-    <section class="section" id="habilidades">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Stack tecnico</p>
-        <h2>Herramientas con las que construyo.</h2>
-      </div>
-      <div class="skill-actions" data-admin-only hidden>
-        <button class="btn primary" type="button" data-skill-add>Agregar habilidad</button>
-      </div>
-      <ul class="skills-grid reveal" id="skillsGrid" aria-label="Habilidades tecnicas">
-      </ul>
-    </section>
-
-    <!-- Tecnologias en aprendizaje: se carga dinamicamente desde MongoDB. -->
-    <section class="section learning-tech-section" id="aprendiendo">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Aprendiendo</p>
-        <h2>Tecnologias que estoy fortaleciendo.</h2>
-      </div>
-      <div class="learning-tech-actions" data-admin-only hidden>
-        <button class="btn primary" type="button" data-learning-tech-add>Agregar tecnologia</button>
-      </div>
-      <ul class="learning-tech-grid reveal" id="learningTechGrid" aria-label="Tecnologias que estoy aprendiendo">
-      </ul>
-    </section>
-
-    <!-- Proceso de trabajo: explica de forma estatica como desarrollo un proyecto. -->
-    <section class="section process-section" id="proceso">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Mi proceso</p>
-        <h2>Una forma clara de llevar una idea a codigo funcional.</h2>
-      </div>
-
-      <div class="process-grid">
-        <article class="process-step reveal">
-          <span>01</span>
-          <h3>Entiendo el problema</h3>
-          <p>Analizo que necesita el proyecto, que flujo debe tener y que partes son mas importantes para que funcione bien.</p>
-        </article>
-
-        <article class="process-step reveal">
-          <span>02</span>
-          <h3>Organizo la estructura</h3>
-          <p>Defino carpetas, responsabilidades y una base de codigo ordenada para que el proyecto sea facil de mantener.</p>
-        </article>
-
-        <article class="process-step reveal">
-          <span>03</span>
-          <h3>Creo la API y rutas</h3>
-          <p>Construyo endpoints, conecto la logica del backend y preparo la comunicacion entre los datos y la aplicacion.</p>
-        </article>
-
-        <article class="process-step reveal">
-          <span>04</span>
-          <h3>Pruebo y corrijo errores</h3>
-          <p>Reviso el comportamiento, ajusto detalles y corrijo errores para mejorar la estabilidad del sistema.</p>
-        </article>
-
-        <article class="process-step reveal">
-          <span>05</span>
-          <h3>Despliego el proyecto</h3>
-          <p>Llevo la aplicacion a produccion, verifico que este disponible y sigo aprendiendo de cada mejora necesaria.</p>
-        </article>
-      </div>
-
-      <div class="focus-strip reveal" aria-label="Areas que destaco">
-        <span>APIs</span>
-        <span>Bases de datos</span>
-        <span>Organizacion de codigo</span>
-        <span>Aprendizaje</span>
-      </div>
-    </section>
-
-    <!-- Proyectos: las tarjetas se crean con datos editables desde MongoDB. -->
-    <section class="section" id="proyectos">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Proyectos destacados</p>
-        <h2>Sistemas reales, funcionales y pensados para crecer.</h2>
-      </div>
-
-      <div class="project-actions" data-admin-only hidden>
-        <button class="btn primary" type="button" data-project-add>Agregar proyecto</button>
-      </div>
-
-      <div class="projects-grid" id="projectsGrid" aria-live="polite">
-      </div>
-    </section>
-
-    <!-- Formacion: tarjetas editables cargadas desde MongoDB. -->
-    <section class="section learning-section">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Formacion</p>
-        <h2>Mi formacion academica y tecnica.</h2>
-      </div>
-
-      <div class="education-actions" data-admin-only hidden>
-        <button class="btn primary" type="button" data-education-add>Agregar formacion</button>
-      </div>
-
-      <div class="education-grid" id="educationGrid" aria-live="polite">
-      </div>
-    </section>
-
-    <!-- Contacto: enlaces principales con iconos SVG integrados. -->
-    <section class="section contact-section" id="contacto">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Contacto</p>
-        <h2>Hablemos de codigo, backend y nuevas ideas.</h2>
-      </div>
-
-      <address class="contact-links reveal">
-        <a href="mailto:juanpagg2010@gmail.com">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img">
-              <path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2v.4l8 4.7 8-4.7V8H4Zm16 8v-5.3l-7.5 4.4a1 1 0 0 1-1 0L4 10.7V16h16Z"></path>
-            </svg>
-          </span>
-          <span>Email</span>
-          juanpagg2010@gmail.com
-        </a>
-        <a href="https://wa.me/573237120228" target="_blank" rel="noreferrer">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img">
-              <path d="M12.04 2C6.58 2 2.13 6.39 2.13 11.79c0 1.72.46 3.4 1.34 4.88L2 22l5.5-1.42a10.05 10.05 0 0 0 4.54 1.09c5.46 0 9.91-4.39 9.91-9.79S17.5 2 12.04 2Zm0 17.86c-1.42 0-2.8-.37-4.03-1.08l-.29-.17-3.1.8.83-2.98-.2-.31a7.82 7.82 0 0 1-1.31-4.33c0-4.39 3.63-7.97 8.1-7.97s8.1 3.58 8.1 7.97-3.63 8.07-8.1 8.07Zm4.43-5.96c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.28-.74-1.76-.19-.46-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.81-.84 1.98s.86 2.3.98 2.46c.12.16 1.69 2.55 4.1 3.58.57.24 1.02.39 1.37.5.58.18 1.1.16 1.51.1.46-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"></path>
-            </svg>
-          </span>
-          <span>WhatsApp</span>
-          323 712 0228
-        </a>
-        <a href="https://github.com/juanpagg2010-cloud" target="_blank" rel="noreferrer">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img">
-              <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.21.68-.48v-1.69c-2.78.6-3.37-1.17-3.37-1.17-.45-1.13-1.11-1.43-1.11-1.43-.91-.61.07-.6.07-.6 1 .07 1.53 1.02 1.53 1.02.89 1.5 2.34 1.07 2.91.82.09-.64.35-1.07.63-1.32-2.22-.25-4.56-1.1-4.56-4.9 0-1.08.39-1.97 1.03-2.66-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02A9.62 9.62 0 0 1 12 7.13c.85 0 1.7.11 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.38.1 2.63.64.69 1.03 1.58 1.03 2.66 0 3.81-2.34 4.65-4.57 4.9.36.31.68.92.68 1.86V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"></path>
-            </svg>
-          </span>
-          <span>GitHub</span>
-          juanpagg2010-cloud
-        </a>
-        <a href="https://www.linkedin.com/in/juan-pablo-barragan-cortes-23a3493aa/" target="_blank" rel="noreferrer">
-          <span class="contact-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" role="img">
-              <path d="M5.37 3.8a2.08 2.08 0 1 1 0 4.16 2.08 2.08 0 0 1 0-4.16ZM3.6 9.55h3.54V20H3.6V9.55Zm5.58 0h3.39v1.43h.05c.47-.89 1.63-1.83 3.35-1.83 3.59 0 4.25 2.36 4.25 5.42V20h-3.54v-4.81c0-1.15-.02-2.62-1.6-2.62-1.6 0-1.84 1.25-1.84 2.54V20H9.18V9.55Z"></path>
-            </svg>
-          </span>
-          <span>LinkedIn</span>
-          Juan Pablo Barragan Cortes
-        </a>
-      </address>
-    </section>
-  </main>
-
-  <!-- Footer: muestra ubicacion, autor y derechos reservados. -->
-  <footer class="site-footer">
-    <div>
-      <p data-profile-footer></p>
-      <small>&copy; 2026 Juan Pablo Barragan Cortes. Todos los derechos reservados.</small>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Portafolio de Juan Pablo Barragan Cortes, desarrollador backend especializado en JavaScript, Node.js y Express.js."
+    />
+    <title>Juan Pablo| Backend Developer</title>
+    <link rel="icon" type="image/svg+xml" href="/Client/assets/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/Client/styles.css" />
+  </head>
+  <body>
+    <!-- Capas visuales del fondo; son decorativas y por eso se ocultan a lectores de pantalla. -->
+    <div class="page-noise" aria-hidden="true"></div>
+    <div class="ambient-stage" aria-hidden="true">
+      <span class="ambient-line"></span>
+      <span class="ambient-line"></span>
+      <span class="ambient-line"></span>
     </div>
-    <a href="#inicio">Volver arriba</a>
-  </footer>
 
-  <!-- Panel flotante de administracion: solo aparece despues de validar la contrasena. -->
-  <div class="admin-panel" data-admin-panel hidden>
-    <span>Modo edicion activo</span>
-    <button type="button" data-project-add>Agregar proyecto</button>
-    <button type="button" data-skill-add>Agregar habilidad</button>
-    <button type="button" data-learning-tech-add>Agregar aprendiendo</button>
-    <button type="button" data-education-add>Agregar formacion</button>
-    <button type="button" data-profile-edit>Editar informacion</button>
-    <button type="button" data-admin-logout>Salir</button>
-  </div>
+    <!-- Encabezado fijo con navegacion principal y entrada privada al modo edicion. -->
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <span>JP</span>
+      </a>
 
-  <!-- Modal de acceso privado para ingresar la contrasena. -->
-  <dialog class="modal" id="passwordModal">
-    <form class="modal-card" method="dialog" id="passwordForm">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <p class="eyebrow">Acceso privado</p>
-      <h2>Ingresa la contrasena</h2>
-      <label>
-        Contrasena
-        <input type="password" name="password" autocomplete="current-password" required>
-      </label>
-      <p class="form-message" data-password-message></p>
-      <button class="btn primary" type="submit">Entrar</button>
-    </form>
-  </dialog>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-  <!-- Modal para crear o editar proyectos. -->
-  <dialog class="modal project-editor-modal" id="projectModal">
-    <form class="modal-card" method="dialog" id="projectForm">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <p class="eyebrow" data-project-mode>Proyecto</p>
-      <h2>Datos del proyecto</h2>
-      <input type="hidden" name="projectId">
-      <label>
-        Nombre
-        <input type="text" name="name" placeholder="Nombre del proyecto" required>
-      </label>
-      <label>
-        URL
-        <input type="url" name="url" placeholder="https://tu-proyecto.com" required>
-      </label>
-      <label>
-        Descripcion
-        <textarea name="description" rows="4" placeholder="Describe que hace el proyecto" required></textarea>
-      </label>
-      <label>
-        Tecnologias usadas
-        <input type="text" name="stack" placeholder="Node.js, Express.js, JavaScript, Tailwind CSS" required>
-      </label>
-      <fieldset class="stats-fieldset project-detail-fieldset">
-        <legend>Detalle profesional</legend>
-        <label>
-          Etiqueta superior
-          <input type="text" name="badge" placeholder="Ej: Gym System" required>
-        </label>
-        <label>
-          Titulo grande
-          <textarea name="headline" rows="3" placeholder="Titulo que aparece en Ver mas informacion" required></textarea>
-        </label>
-        <label>
-          Descripcion del detalle
-          <textarea name="overview" rows="4" placeholder="Explica el proyecto con mas profundidad" required></textarea>
-        </label>
-        <label>
-          Video actual o URL
-          <input type="text" name="video" placeholder="/Client/assets/projects/demo.mp4 o https://...">
-        </label>
-        <label>
-          Subir nuevo video
-          <input type="file" name="videoFile" accept="video/mp4,video/webm,video/ogg">
-        </label>
-      </fieldset>
-      <fieldset class="stats-fieldset project-detail-fieldset">
-        <legend>Metricas</legend>
-        <label>
-          Valor 1
-          <input type="text" name="metricValue0" placeholder="3" required>
-        </label>
-        <label>
-          Etiqueta 1
-          <input type="text" name="metricLabel0" placeholder="Roles" required>
-        </label>
-        <label>
-          Valor 2
-          <input type="text" name="metricValue1" placeholder="24/7" required>
-        </label>
-        <label>
-          Etiqueta 2
-          <input type="text" name="metricLabel1" placeholder="Acceso" required>
-        </label>
-        <label>
-          Valor 3
-          <input type="text" name="metricValue2" placeholder="Web" required>
-        </label>
-        <label>
-          Etiqueta 3
-          <input type="text" name="metricLabel2" placeholder="Gestion" required>
-        </label>
-      </fieldset>
-      <fieldset class="stats-fieldset project-detail-fieldset">
-        <legend>Tarjetas del detalle</legend>
-        <label>
-          Titulo tarjeta 1
-          <input type="text" name="highlightTitle0" required>
-        </label>
-        <label>
-          Texto tarjeta 1
-          <textarea name="highlightText0" rows="3" required></textarea>
-        </label>
-        <label>
-          Titulo tarjeta 2
-          <input type="text" name="highlightTitle1" required>
-        </label>
-        <label>
-          Texto tarjeta 2
-          <textarea name="highlightText1" rows="3" required></textarea>
-        </label>
-        <label>
-          Titulo tarjeta 3
-          <input type="text" name="highlightTitle2" required>
-        </label>
-        <label>
-          Texto tarjeta 3
-          <textarea name="highlightText2" rows="3" required></textarea>
-        </label>
-      </fieldset>
-      <label>
-        Resultado final
-        <textarea name="result" rows="4" placeholder="Que demuestra o que lograste con este proyecto" required></textarea>
-      </label>
-      <div class="modal-actions">
-        <button class="btn primary" type="submit">Guardar</button>
-        <button class="btn danger" type="button" data-project-delete hidden>Eliminar</button>
+      <nav class="main-nav" aria-label="Navegacion principal">
+        <a href="#sobre-mi">Sobre mi</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#aprendiendo">Aprendiendo</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a tema claro" aria-pressed="false">
+        <span class="theme-toggle-icon" aria-hidden="true"></span>
+        <span data-theme-label>Claro</span>
+      </button>
+
+      <button class="admin-entry" type="button" data-admin-open>Editar</button>
+    </header>
+
+    <main>
+      <!-- Hero principal: presenta el nombre, la propuesta de valor y el resumen backend. -->
+      <section class="hero section" id="inicio">
+        <div class="code-stream" aria-hidden="true">
+          <span>responsabilidad</span>
+          <span>constancia</span>
+          <span>ganas de aprender</span>
+          <span>mentalidad de crecimiento</span>
+          <span>soluciones robustas</span>
+          <span>mejora continua</span>
+          <span>compromiso</span>
+        </div>
+
+        <div class="hero-content reveal">
+          <p class="eyebrow">Backend Developer</p>
+          <h1 data-profile-name>Juan Pablo Barragan Cortes</h1>
+          <p class="hero-copy" data-profile-hero>
+            Construyo la logica detras de cada aplicacion: APIs seguras, bases
+            de datos eficientes y sistemas backend escalables que hacen que todo
+            funcione.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#proyectos">Ver proyectos</a>
+            <a
+              class="btn secondary"
+              href="https://wa.me/573237120228"
+              target="_blank"
+              rel="noreferrer"
+              >Contactame</a
+            >
+          </div>
+        </div>
+
+        <aside class="profile-panel reveal" aria-label="Resumen profesional">
+          <div class="avatar-placeholder">
+            <img
+              data-profile-photo
+              src=""
+              alt="Foto de Juan Pablo Barragan Cortes"
+              hidden
+            />
+            <span data-profile-initials>JP</span>
+          </div>
+          <div>
+            <p class="panel-label">Especialidad</p>
+            <h2 data-profile-specialty>JavaScript Backend</h2>
+          </div>
+          <ul class="quick-stats">
+            <li>
+              <strong data-stat-title="0">Node.js</strong>
+              <span data-stat-text="0">Runtime principal</span>
+            </li>
+            <li>
+              <strong data-stat-title="1">Express.js</strong>
+              <span data-stat-text="1">APIs y rutas</span>
+            </li>
+            <li>
+              <strong data-stat-title="2">DevSenior Code</strong>
+              <span data-stat-text="2">Formacion actual</span>
+            </li>
+          </ul>
+        </aside>
+      </section>
+
+      <!-- Seccion personal: cuenta quien soy y parte del contenido se puede editar desde admin. -->
+      <section class="section split-section" id="sobre-mi">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Sobre mi</p>
+          <h2>Trabajo desde la base que sostiene el producto.</h2>
+        </div>
+        <div class="text-block reveal">
+          <p data-profile-about>
+            Soy un desarrollador web especializado en el backend con JavaScript.
+            Me enfoco en tecnologias como Node.js, Express, HTML y CSS, aunque
+            mi principal fortaleza es el desarrollo backend.
+          </p>
+          <p data-profile-location>
+            Soy de Colombia, Ibague - Tolima, y desde ahi estoy construyendo mi
+            camino en el desarrollo web con enfoque en soluciones backend.
+          </p>
+          <p>
+            Estoy en constante formacion, buscando mejorar mis estandares,
+            aprender otros lenguajes y profundizar mis habilidades en JavaScript
+            a un nivel mas avanzado. En la industria, busco aportar soluciones
+            robustas y seguir creciendo como profesional en el ambito del
+            desarrollo.
+          </p>
+        </div>
+      </section>
+
+      <!-- Stack tecnico: se renderiza dinamicamente con datos guardados en MongoDB. -->
+      <section class="section" id="habilidades">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Stack tecnico</p>
+          <h2>Herramientas con las que construyo.</h2>
+        </div>
+        <div class="skill-actions" data-admin-only hidden>
+          <button class="btn primary" type="button" data-skill-add>
+            Agregar habilidad
+          </button>
+        </div>
+        <ul
+          class="skills-grid reveal"
+          id="skillsGrid"
+          aria-label="Habilidades tecnicas"
+        ></ul>
+      </section>
+
+      <!-- Tecnologias en aprendizaje: se carga dinamicamente desde MongoDB. -->
+      <section class="section learning-tech-section" id="aprendiendo">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Aprendiendo</p>
+          <h2>Tecnologias que estoy fortaleciendo.</h2>
+        </div>
+        <div class="learning-tech-actions" data-admin-only hidden>
+          <button class="btn primary" type="button" data-learning-tech-add>
+            Agregar tecnologia
+          </button>
+        </div>
+        <ul
+          class="learning-tech-grid reveal"
+          id="learningTechGrid"
+          aria-label="Tecnologias que estoy aprendiendo"
+        ></ul>
+      </section>
+
+      <!-- Proceso de trabajo: explica de forma estatica como desarrollo un proyecto. -->
+      <section class="section process-section" id="proceso">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Mi proceso</p>
+          <h2>Una forma clara de llevar una idea a codigo funcional.</h2>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-step reveal">
+            <span>01</span>
+            <h3>Entiendo el problema</h3>
+            <p>
+              Analizo que necesita el proyecto, que flujo debe tener y que
+              partes son mas importantes para que funcione bien.
+            </p>
+          </article>
+
+          <article class="process-step reveal">
+            <span>02</span>
+            <h3>Organizo la estructura</h3>
+            <p>
+              Defino carpetas, responsabilidades y una base de codigo ordenada
+              para que el proyecto sea facil de mantener.
+            </p>
+          </article>
+
+          <article class="process-step reveal">
+            <span>03</span>
+            <h3>Creo la API y rutas</h3>
+            <p>
+              Construyo endpoints, conecto la logica del backend y preparo la
+              comunicacion entre los datos y la aplicacion.
+            </p>
+          </article>
+
+          <article class="process-step reveal">
+            <span>04</span>
+            <h3>Pruebo y corrijo errores</h3>
+            <p>
+              Reviso el comportamiento, ajusto detalles y corrijo errores para
+              mejorar la estabilidad del sistema.
+            </p>
+          </article>
+
+          <article class="process-step reveal">
+            <span>05</span>
+            <h3>Despliego el proyecto</h3>
+            <p>
+              Llevo la aplicacion a produccion, verifico que este disponible y
+              sigo aprendiendo de cada mejora necesaria.
+            </p>
+          </article>
+        </div>
+
+        <div class="focus-strip reveal" aria-label="Areas que destaco">
+          <span>APIs</span>
+          <span>Bases de datos</span>
+          <span>Organizacion de codigo</span>
+          <span>Aprendizaje</span>
+        </div>
+      </section>
+
+      <!-- Proyectos: las tarjetas se crean con datos editables desde MongoDB. -->
+      <section class="section" id="proyectos">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Proyectos destacados</p>
+          <h2>Sistemas reales, funcionales y pensados para crecer.</h2>
+        </div>
+
+        <div class="project-actions" data-admin-only hidden>
+          <button class="btn primary" type="button" data-project-add>
+            Agregar proyecto
+          </button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid" aria-live="polite"></div>
+      </section>
+
+      <!-- Formacion: tarjetas editables cargadas desde MongoDB. -->
+      <section class="section learning-section">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Formacion</p>
+          <h2>Mi formacion academica y tecnica.</h2>
+        </div>
+
+        <div class="education-actions" data-admin-only hidden>
+          <button class="btn primary" type="button" data-education-add>
+            Agregar formacion
+          </button>
+        </div>
+
+        <div class="education-grid" id="educationGrid" aria-live="polite"></div>
+      </section>
+
+      <!-- Contacto: enlaces principales con iconos SVG integrados. -->
+      <section class="section contact-section" id="contacto">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Contacto</p>
+          <h2>Hablemos de codigo, backend y nuevas ideas.</h2>
+        </div>
+
+        <address class="contact-links reveal">
+          <a href="mailto:juanpagg2010@gmail.com">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path
+                  d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Zm0 2v.4l8 4.7 8-4.7V8H4Zm16 8v-5.3l-7.5 4.4a1 1 0 0 1-1 0L4 10.7V16h16Z"
+                ></path>
+              </svg>
+            </span>
+            <span>Email</span>
+            juanpagg2010@gmail.com
+          </a>
+          <a href="https://wa.me/573237120228" target="_blank" rel="noreferrer">
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path
+                  d="M12.04 2C6.58 2 2.13 6.39 2.13 11.79c0 1.72.46 3.4 1.34 4.88L2 22l5.5-1.42a10.05 10.05 0 0 0 4.54 1.09c5.46 0 9.91-4.39 9.91-9.79S17.5 2 12.04 2Zm0 17.86c-1.42 0-2.8-.37-4.03-1.08l-.29-.17-3.1.8.83-2.98-.2-.31a7.82 7.82 0 0 1-1.31-4.33c0-4.39 3.63-7.97 8.1-7.97s8.1 3.58 8.1 7.97-3.63 8.07-8.1 8.07Zm4.43-5.96c-.24-.12-1.43-.7-1.65-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.18-.71-.63-1.19-1.41-1.33-1.65-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.28-.74-1.76-.19-.46-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.81-.84 1.98s.86 2.3.98 2.46c.12.16 1.69 2.55 4.1 3.58.57.24 1.02.39 1.37.5.58.18 1.1.16 1.51.1.46-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28Z"
+                ></path>
+              </svg>
+            </span>
+            <span>WhatsApp</span>
+            323 712 0228
+          </a>
+          <a
+            href="https://github.com/juanpagg2010-cloud"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path
+                  d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.21.68-.48v-1.69c-2.78.6-3.37-1.17-3.37-1.17-.45-1.13-1.11-1.43-1.11-1.43-.91-.61.07-.6.07-.6 1 .07 1.53 1.02 1.53 1.02.89 1.5 2.34 1.07 2.91.82.09-.64.35-1.07.63-1.32-2.22-.25-4.56-1.1-4.56-4.9 0-1.08.39-1.97 1.03-2.66-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02A9.62 9.62 0 0 1 12 7.13c.85 0 1.7.11 2.5.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.38.1 2.63.64.69 1.03 1.58 1.03 2.66 0 3.81-2.34 4.65-4.57 4.9.36.31.68.92.68 1.86V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
+                ></path>
+              </svg>
+            </span>
+            <span>GitHub</span>
+            juanpagg2010-cloud
+          </a>
+          <a
+            href="https://www.linkedin.com/in/juan-pablo-barragan-cortes-23a3493aa/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="contact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path
+                  d="M5.37 3.8a2.08 2.08 0 1 1 0 4.16 2.08 2.08 0 0 1 0-4.16ZM3.6 9.55h3.54V20H3.6V9.55Zm5.58 0h3.39v1.43h.05c.47-.89 1.63-1.83 3.35-1.83 3.59 0 4.25 2.36 4.25 5.42V20h-3.54v-4.81c0-1.15-.02-2.62-1.6-2.62-1.6 0-1.84 1.25-1.84 2.54V20H9.18V9.55Z"
+                ></path>
+              </svg>
+            </span>
+            <span>LinkedIn</span>
+            Juan Pablo Barragan Cortes
+          </a>
+        </address>
+      </section>
+    </main>
+
+    <!-- Footer: muestra ubicacion, autor y derechos reservados. -->
+    <footer class="site-footer">
+      <div>
+        <p data-profile-footer></p>
+        <small
+          >&copy; 2026 Juan Pablo Barragan Cortes. Todos los derechos
+          reservados.</small
+        >
       </div>
-    </form>
-  </dialog>
+      <a href="#inicio">Volver arriba</a>
+    </footer>
 
-  <!-- Modal publico de detalle: convierte cada proyecto en una vista mas profesional con video, metricas y stack. -->
-  <dialog class="modal project-detail-modal" id="projectDetailModal">
-    <article class="modal-card project-detail-card">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <div id="projectDetailContent"></div>
-    </article>
-  </dialog>
+    <!-- Panel flotante de administracion: solo aparece despues de validar la contrasena. -->
+    <div class="admin-panel" data-admin-panel hidden>
+      <span>Modo edicion activo</span>
+      <button type="button" data-project-add>Agregar proyecto</button>
+      <button type="button" data-skill-add>Agregar habilidad</button>
+      <button type="button" data-learning-tech-add>Agregar aprendiendo</button>
+      <button type="button" data-education-add>Agregar formacion</button>
+      <button type="button" data-profile-edit>Editar informacion</button>
+      <button type="button" data-admin-logout>Salir</button>
+    </div>
 
-  <!-- Modal para editar datos del perfil, hero y tarjeta lateral. -->
-  <dialog class="modal" id="profileModal">
-    <form class="modal-card" method="dialog" id="profileForm">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <p class="eyebrow">Mi informacion</p>
-      <h2>Editar textos principales</h2>
-      <label>
-        Nombre
-        <input type="text" name="name" required>
-      </label>
-      <label>
-        Frase principal
-        <textarea name="hero" rows="3" required></textarea>
-      </label>
-      <label>
-        Sobre mi
-        <textarea name="about" rows="4" required></textarea>
-      </label>
-      <label>
-        Ubicacion
-        <input type="text" name="location" required>
-      </label>
-      <label>
-        Iniciales del recuadro
-        <input type="text" name="initials" maxlength="4" required>
-      </label>
-      <label>
-        Foto de perfil
-        <input type="file" name="photo" accept="image/*">
-      </label>
-      <button class="btn secondary" type="button" data-photo-remove hidden>Quitar foto</button>
-      <label>
-        Especialidad
-        <input type="text" name="specialty" required>
-      </label>
-      <fieldset class="stats-fieldset">
-        <legend>Datos de la tarjeta lateral</legend>
+    <!-- Modal de acceso privado para ingresar la contrasena. -->
+    <dialog class="modal" id="passwordModal">
+      <form class="modal-card" method="dialog" id="passwordForm">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <p class="eyebrow">Acceso privado</p>
+        <h2>Ingresa la contrasena</h2>
         <label>
-          Titulo 1
-          <input type="text" name="statTitle0" required>
+          Contrasena
+          <input
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+        <p class="form-message" data-password-message></p>
+        <button class="btn primary" type="submit">Entrar</button>
+      </form>
+    </dialog>
+
+    <!-- Modal para crear o editar proyectos. -->
+    <dialog class="modal project-editor-modal" id="projectModal">
+      <form class="modal-card" method="dialog" id="projectForm">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <p class="eyebrow" data-project-mode>Proyecto</p>
+        <h2>Datos del proyecto</h2>
+        <input type="hidden" name="projectId" />
+        <label>
+          Nombre
+          <input
+            type="text"
+            name="name"
+            placeholder="Nombre del proyecto"
+            required
+          />
         </label>
         <label>
-          Descripcion 1
-          <input type="text" name="statText0" required>
+          URL
+          <input
+            type="url"
+            name="url"
+            placeholder="https://tu-proyecto.com"
+            required
+          />
         </label>
         <label>
-          Titulo 2
-          <input type="text" name="statTitle1" required>
+          Descripcion
+          <textarea
+            name="description"
+            rows="4"
+            placeholder="Describe que hace el proyecto"
+            required
+          ></textarea>
         </label>
         <label>
-          Descripcion 2
-          <input type="text" name="statText1" required>
+          Tecnologias usadas
+          <input
+            type="text"
+            name="stack"
+            placeholder="Node.js, Express.js, JavaScript, Tailwind CSS"
+            required
+          />
+        </label>
+        <fieldset class="stats-fieldset project-detail-fieldset">
+          <legend>Detalle profesional</legend>
+          <label>
+            Etiqueta superior
+            <input
+              type="text"
+              name="badge"
+              placeholder="Ej: Gym System"
+              required
+            />
+          </label>
+          <label>
+            Titulo grande
+            <textarea
+              name="headline"
+              rows="3"
+              placeholder="Titulo que aparece en Ver mas informacion"
+              required
+            ></textarea>
+          </label>
+          <label>
+            Descripcion del detalle
+            <textarea
+              name="overview"
+              rows="4"
+              placeholder="Explica el proyecto con mas profundidad"
+              required
+            ></textarea>
+          </label>
+          <label>
+            Video actual o URL
+            <input
+              type="text"
+              name="video"
+              placeholder="/Client/assets/projects/demo.mp4 o https://..."
+            />
+          </label>
+          <label>
+            Subir nuevo video
+            <input
+              type="file"
+              name="videoFile"
+              accept="video/mp4,video/webm,video/ogg"
+            />
+          </label>
+        </fieldset>
+        <fieldset class="stats-fieldset project-detail-fieldset">
+          <legend>Metricas</legend>
+          <label>
+            Valor 1
+            <input type="text" name="metricValue0" placeholder="3" required />
+          </label>
+          <label>
+            Etiqueta 1
+            <input
+              type="text"
+              name="metricLabel0"
+              placeholder="Roles"
+              required
+            />
+          </label>
+          <label>
+            Valor 2
+            <input
+              type="text"
+              name="metricValue1"
+              placeholder="24/7"
+              required
+            />
+          </label>
+          <label>
+            Etiqueta 2
+            <input
+              type="text"
+              name="metricLabel1"
+              placeholder="Acceso"
+              required
+            />
+          </label>
+          <label>
+            Valor 3
+            <input type="text" name="metricValue2" placeholder="Web" required />
+          </label>
+          <label>
+            Etiqueta 3
+            <input
+              type="text"
+              name="metricLabel2"
+              placeholder="Gestion"
+              required
+            />
+          </label>
+        </fieldset>
+        <fieldset class="stats-fieldset project-detail-fieldset">
+          <legend>Tarjetas del detalle</legend>
+          <label>
+            Titulo tarjeta 1
+            <input type="text" name="highlightTitle0" required />
+          </label>
+          <label>
+            Texto tarjeta 1
+            <textarea name="highlightText0" rows="3" required></textarea>
+          </label>
+          <label>
+            Titulo tarjeta 2
+            <input type="text" name="highlightTitle1" required />
+          </label>
+          <label>
+            Texto tarjeta 2
+            <textarea name="highlightText1" rows="3" required></textarea>
+          </label>
+          <label>
+            Titulo tarjeta 3
+            <input type="text" name="highlightTitle2" required />
+          </label>
+          <label>
+            Texto tarjeta 3
+            <textarea name="highlightText2" rows="3" required></textarea>
+          </label>
+        </fieldset>
+        <label>
+          Resultado final
+          <textarea
+            name="result"
+            rows="4"
+            placeholder="Que demuestra o que lograste con este proyecto"
+            required
+          ></textarea>
+        </label>
+        <div class="modal-actions">
+          <button class="btn primary" type="submit">Guardar</button>
+          <button class="btn danger" type="button" data-project-delete hidden>
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Modal publico de detalle: convierte cada proyecto en una vista mas profesional con video, metricas y stack. -->
+    <dialog class="modal project-detail-modal" id="projectDetailModal">
+      <article class="modal-card project-detail-card">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <div id="projectDetailContent"></div>
+      </article>
+    </dialog>
+
+    <!-- Modal para editar datos del perfil, hero y tarjeta lateral. -->
+    <dialog class="modal" id="profileModal">
+      <form class="modal-card" method="dialog" id="profileForm">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <p class="eyebrow">Mi informacion</p>
+        <h2>Editar textos principales</h2>
+        <label>
+          Nombre
+          <input type="text" name="name" required />
         </label>
         <label>
-          Titulo 3
-          <input type="text" name="statTitle2" required>
+          Frase principal
+          <textarea name="hero" rows="3" required></textarea>
         </label>
         <label>
-          Descripcion 3
-          <input type="text" name="statText2" required>
+          Sobre mi
+          <textarea name="about" rows="4" required></textarea>
         </label>
-      </fieldset>
-      <button class="btn primary" type="submit">Guardar cambios</button>
-    </form>
-  </dialog>
+        <label>
+          Ubicacion
+          <input type="text" name="location" required />
+        </label>
+        <label>
+          Iniciales del recuadro
+          <input type="text" name="initials" maxlength="4" required />
+        </label>
+        <label>
+          Foto de perfil
+          <input type="file" name="photo" accept="image/*" />
+        </label>
+        <button class="btn secondary" type="button" data-photo-remove hidden>
+          Quitar foto
+        </button>
+        <label>
+          Especialidad
+          <input type="text" name="specialty" required />
+        </label>
+        <fieldset class="stats-fieldset">
+          <legend>Datos de la tarjeta lateral</legend>
+          <label>
+            Titulo 1
+            <input type="text" name="statTitle0" required />
+          </label>
+          <label>
+            Descripcion 1
+            <input type="text" name="statText0" required />
+          </label>
+          <label>
+            Titulo 2
+            <input type="text" name="statTitle1" required />
+          </label>
+          <label>
+            Descripcion 2
+            <input type="text" name="statText1" required />
+          </label>
+          <label>
+            Titulo 3
+            <input type="text" name="statTitle2" required />
+          </label>
+          <label>
+            Descripcion 3
+            <input type="text" name="statText2" required />
+          </label>
+        </fieldset>
+        <button class="btn primary" type="submit">Guardar cambios</button>
+      </form>
+    </dialog>
 
-  <!-- Modal para crear o editar habilidades. -->
-  <dialog class="modal" id="skillModal">
-    <form class="modal-card" method="dialog" id="skillForm">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <p class="eyebrow" data-skill-mode>Habilidad</p>
-      <h2>Editar stack tecnico</h2>
-      <input type="hidden" name="skillId">
-      <label>
-        Nombre de la habilidad
-        <input type="text" name="skillName" placeholder="Ej: MongoDB" required>
-      </label>
-      <div class="modal-actions">
-        <button class="btn primary" type="submit">Guardar</button>
-        <button class="btn danger" type="button" data-skill-delete hidden>Eliminar</button>
-      </div>
-    </form>
-  </dialog>
+    <!-- Modal para crear o editar habilidades. -->
+    <dialog class="modal" id="skillModal">
+      <form class="modal-card" method="dialog" id="skillForm">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <p class="eyebrow" data-skill-mode>Habilidad</p>
+        <h2>Editar stack tecnico</h2>
+        <input type="hidden" name="skillId" />
+        <label>
+          Nombre de la habilidad
+          <input
+            type="text"
+            name="skillName"
+            placeholder="Ej: MongoDB"
+            required
+          />
+        </label>
+        <div class="modal-actions">
+          <button class="btn primary" type="submit">Guardar</button>
+          <button class="btn danger" type="button" data-skill-delete hidden>
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </dialog>
 
-  <!-- Modal para crear o editar formacion. -->
-  <dialog class="modal" id="educationModal">
-    <form class="modal-card" method="dialog" id="educationForm">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <p class="eyebrow" data-education-mode>Formacion</p>
-      <h2>Editar formacion</h2>
-      <input type="hidden" name="educationId">
-      <input type="hidden" name="currentLogo">
-      <label>
-        Etiqueta
-        <input type="text" name="label" placeholder="Ej: Formacion actual" required>
-      </label>
-      <label>
-        Nombre
-        <input type="text" name="title" placeholder="Ej: DevSenior Code" required>
-      </label>
-      <label>
-        Descripcion
-        <textarea name="description" rows="4" placeholder="Describe esta formacion" required></textarea>
-      </label>
-      <label>
-        Link
-        <input type="url" name="url" placeholder="https://sitio.com" required>
-      </label>
-      <label>
-        Logo o imagen
-        <input type="file" name="logo" accept="image/*">
-      </label>
-      <div class="modal-actions">
-        <button class="btn primary" type="submit">Guardar</button>
-        <button class="btn danger" type="button" data-education-delete hidden>Eliminar</button>
-      </div>
-    </form>
-  </dialog>
+    <!-- Modal para crear o editar formacion. -->
+    <dialog class="modal" id="educationModal">
+      <form class="modal-card" method="dialog" id="educationForm">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <p class="eyebrow" data-education-mode>Formacion</p>
+        <h2>Editar formacion</h2>
+        <input type="hidden" name="educationId" />
+        <input type="hidden" name="currentLogo" />
+        <label>
+          Etiqueta
+          <input
+            type="text"
+            name="label"
+            placeholder="Ej: Formacion actual"
+            required
+          />
+        </label>
+        <label>
+          Nombre
+          <input
+            type="text"
+            name="title"
+            placeholder="Ej: DevSenior Code"
+            required
+          />
+        </label>
+        <label>
+          Descripcion
+          <textarea
+            name="description"
+            rows="4"
+            placeholder="Describe esta formacion"
+            required
+          ></textarea>
+        </label>
+        <label>
+          Link
+          <input
+            type="url"
+            name="url"
+            placeholder="https://sitio.com"
+            required
+          />
+        </label>
+        <label>
+          Logo o imagen
+          <input type="file" name="logo" accept="image/*" />
+        </label>
+        <div class="modal-actions">
+          <button class="btn primary" type="submit">Guardar</button>
+          <button class="btn danger" type="button" data-education-delete hidden>
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </dialog>
 
-  <!-- Modal para crear o editar tecnologias en aprendizaje. -->
-  <dialog class="modal" id="learningTechModal">
-    <form class="modal-card" method="dialog" id="learningTechForm">
-      <button class="modal-close" type="button" data-modal-close aria-label="Cerrar">x</button>
-      <p class="eyebrow" data-learning-tech-mode>Tecnologia</p>
-      <h2>Editar aprendizaje</h2>
-      <input type="hidden" name="techId">
-      <label>
-        Tecnologia
-        <input type="text" name="techName" placeholder="Ej: MongoDB" required>
-      </label>
-      <label>
-        Descripcion corta
-        <textarea name="techDescription" rows="3" placeholder="Que estas practicando o fortaleciendo" required></textarea>
-      </label>
-      <div class="modal-actions">
-        <button class="btn primary" type="submit">Guardar</button>
-        <button class="btn danger" type="button" data-learning-tech-delete hidden>Eliminar</button>
-      </div>
-    </form>
-  </dialog>
+    <!-- Modal para crear o editar tecnologias en aprendizaje. -->
+    <dialog class="modal" id="learningTechModal">
+      <form class="modal-card" method="dialog" id="learningTechForm">
+        <button
+          class="modal-close"
+          type="button"
+          data-modal-close
+          aria-label="Cerrar"
+        >
+          x
+        </button>
+        <p class="eyebrow" data-learning-tech-mode>Tecnologia</p>
+        <h2>Editar aprendizaje</h2>
+        <input type="hidden" name="techId" />
+        <label>
+          Tecnologia
+          <input
+            type="text"
+            name="techName"
+            placeholder="Ej: MongoDB"
+            required
+          />
+        </label>
+        <label>
+          Descripcion corta
+          <textarea
+            name="techDescription"
+            rows="3"
+            placeholder="Que estas practicando o fortaleciendo"
+            required
+          ></textarea>
+        </label>
+        <div class="modal-actions">
+          <button class="btn primary" type="submit">Guardar</button>
+          <button
+            class="btn danger"
+            type="button"
+            data-learning-tech-delete
+            hidden
+          >
+            Eliminar
+          </button>
+        </div>
+      </form>
+    </dialog>
 
-  <script type="module" src="/Client/script.js"></script>
-</body>
+    <script type="module" src="/Client/script.js"></script>
+  </body>
 </html>

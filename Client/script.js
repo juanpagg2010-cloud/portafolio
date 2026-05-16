@@ -5,6 +5,8 @@ const navToggle = document.querySelector(".nav-toggle");
 const mainNav = document.querySelector(".main-nav");
 const navLinks = document.querySelectorAll(".main-nav a");
 const sections = document.querySelectorAll("section[id]");
+const themeToggle = document.querySelector("[data-theme-toggle]");
+const themeLabel = document.querySelector("[data-theme-label]");
 const projectsGrid = document.querySelector("#projectsGrid");
 const skillsGrid = document.querySelector("#skillsGrid");
 const educationGrid = document.querySelector("#educationGrid");
@@ -43,6 +45,26 @@ let isAdmin = false;
 let pendingAction = null;
 let revealObserver;
 const MAX_VIDEO_UPLOAD_SIZE = 7 * 1024 * 1024;
+
+// Logos alternativos para casos donde MongoDB todavia no trae el campo logoLight.
+const EDUCATION_LOGO_FALLBACKS = {
+  devsenior: {
+    logoLight: "assets/devsenior-logo-dark.svg",
+  },
+};
+
+// El tema se guarda en el navegador para que el visitante conserve su preferencia entre recargas.
+function setTheme(theme) {
+  const isLight = theme === "light";
+  document.body.classList.toggle("theme-light", isLight);
+  themeToggle.setAttribute("aria-pressed", String(isLight));
+  themeToggle.setAttribute("aria-label", isLight ? "Cambiar a tema oscuro" : "Cambiar a tema claro");
+  themeLabel.textContent = isLight ? "Oscuro" : "Claro";
+  localStorage.setItem("portfolio-theme", theme);
+  renderEducation();
+}
+
+setTheme(localStorage.getItem("portfolio-theme") || "dark");
 
 // Estos detalles enriquecen los proyectos principales aunque MongoDB tenga guardada una version antigua sin campos extra.
 const PROJECT_DETAIL_FALLBACKS = {
@@ -263,13 +285,17 @@ function renderProjects() {
 }
 
 function renderEducation() {
+  const isLightTheme = document.body.classList.contains("theme-light");
   educationGrid.innerHTML = siteData.education
-    .map(
-      (item) => `
+    .map((item) => {
+      const fallback = EDUCATION_LOGO_FALLBACKS[item.id] || {};
+      const logo = isLightTheme ? item.logoLight || fallback.logoLight || item.logo : item.logo;
+
+      return `
         <article class="education-card reveal visible" data-education-id="${escapeHtml(item.id)}">
           <a class="education-card-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">
             <div class="education-logo">
-              <img src="${escapeHtml(item.logo)}" alt="Logo de ${escapeHtml(item.title)}">
+              <img src="${escapeHtml(logo)}" alt="Logo de ${escapeHtml(item.title)}">
             </div>
             <div>
               <span>${escapeHtml(item.label)}</span>
@@ -279,8 +305,8 @@ function renderEducation() {
           </a>
           <button class="education-edit" type="button" data-education-edit="${escapeHtml(item.id)}" ${isAdmin ? "" : "hidden"}>Editar</button>
         </article>
-      `
-    )
+      `;
+    })
     .join("");
 }
 
@@ -598,6 +624,11 @@ navLinks.forEach((link) => {
     mainNav.classList.remove("open");
     navToggle.setAttribute("aria-expanded", "false");
   });
+});
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.body.classList.contains("theme-light") ? "dark" : "light";
+  setTheme(nextTheme);
 });
 
 adminOpenButtons.forEach((button) => {

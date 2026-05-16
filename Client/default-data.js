@@ -111,6 +111,7 @@ export const DEFAULT_DATA = {
         "Actualmente estoy estudiando JavaScript y desarrollo web para crear soluciones backend mas limpias, robustas y profesionales.",
       url: "https://www.devseniorcode.com/nosotros/",
       logo: "assets/devsenior-logo.webp",
+      logoLight: "assets/devsenior-logo-dark.svg",
     },
     {
       id: "fps",
